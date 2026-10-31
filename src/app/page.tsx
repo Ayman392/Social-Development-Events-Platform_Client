@@ -1,9 +1,9 @@
+import Hero from "@/components/Home/Hero/page";
 
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <h2>hello</h2>
+    <div className="mx-auto w-full max-w-7xl space-y-24 px-4 py-8 sm:px-6 lg:px-8">
+      <Hero />
     </div>
   );
 }
