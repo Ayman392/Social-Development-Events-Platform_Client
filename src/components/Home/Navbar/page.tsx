@@ -10,7 +10,6 @@ import {
   ChevronDown,
   ClipboardList,
   Heart,
-  LogOut,
   Menu,
   Moon,
   Sun,
@@ -169,13 +168,21 @@ export default function Navbar() {
 
                   <DropdownMenuSeparator />
 
-                  <DropdownMenuItem
-                    onClick={handleLogout}
-                    className="cursor-pointer px-4 py-2 text-sm text-red-600 focus:bg-red-50 focus:text-red-600 dark:focus:bg-red-950/30"
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log out
-                  </DropdownMenuItem>
+{!isPending && session && (
+  <>
+    <DropdownMenu>
+      {/* ...everything you already have, unchanged... */}
+    </DropdownMenu>
+
+    <Button
+      variant="outline"
+      onClick={handleLogout}
+      className="hidden rounded-full sm:inline-flex"
+    >
+      Log out
+    </Button>
+  </>
+)}
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
