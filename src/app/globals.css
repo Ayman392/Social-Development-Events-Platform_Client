@@ -5,6 +5,28 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Loading overlay shown for 0.5s whenever a page opens */
+.page-loader {
+  position: fixed;
+  top: 4rem; /* leaves the navbar visible */
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  animation: page-loader-hide 0.15s ease 0.5s forwards;
+}
+
+@keyframes page-loader-hide {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
