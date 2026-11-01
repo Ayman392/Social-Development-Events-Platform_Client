@@ -12,3 +12,16 @@ export type EventItem = {
   creatorPhoto?: string;
   volunteersCount: number;
 };
+
+export type JoinedEventItem = {
+  _id: string;
+  eventId: string;
+  userEmail: string;
+  userName: string;
+  title: string;
+  thumbnail: string;
+  location: string;
+  eventType: string;
+  eventDate: string;
+  joinedAt: string;
+};

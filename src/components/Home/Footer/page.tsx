@@ -45,7 +45,7 @@ export default function Footer() {
               <div className="mr-3 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
                 <Heart className="h-5 w-5 text-white" fill="currentColor" />
               </div>
-              <span className="text-xl font-semibold tracking-tight text-white">HopeNetwork</span>
+              <span className="text-xl font-semibold tracking-tight text-white">Oikyo</span>
             </Link>
 
             <p className="mb-6 text-sm leading-relaxed text-slate-400">
@@ -112,7 +112,7 @@ export default function Footer() {
               <li className="flex items-start">
                 <Mail className="mr-3 mt-0.5 h-4 w-4 shrink-0 text-sky-400" />
                 <a href="mailto:hello@hopenetwork.example" className="transition-colors hover:text-white">
-                  hello@hopenetwork.example
+                  hello@oikyo.com
                 </a>
               </li>
             </ul>

@@ -20,6 +20,12 @@
   animation: page-loader-hide 0.15s ease 0.5s forwards;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @keyframes page-loader-hide {
   to {
     opacity: 0;

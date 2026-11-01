@@ -31,7 +31,7 @@ import { signOut, useSession } from "@/lib/auth-client";
 
 const navLinks = [
   { href: "/events", label: "Upcoming Events" },
-  { href: "/#features", label: "How It Works" },
+  { href: "/#how-it-works", label: "How It Works" },
   { href: "/#gallery", label: "Gallery" },
 ];
 
