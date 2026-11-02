@@ -1,5 +1,6 @@
 "use client";
 
+import { apiFetch } from "@/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -10,10 +11,7 @@ import PrivateRoute from "@/components/Home/PrivateRoute/page";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useSession } from "@/lib/auth-client";
 import { validateUrl } from "@/lib/validators";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const eventTypes = [
   "Cleanup",
@@ -45,7 +43,6 @@ const inputClass = "h-12 rounded-2xl border-0 bg-slate-200/60 px-5 dark:bg-zinc-
 
 export default function CreateEventPage() {
   const router = useRouter();
-  const { data: session } = useSession();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -104,7 +101,7 @@ export default function CreateEventPage() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/events`, {
+      const res = await apiFetch(`/events`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -115,10 +112,6 @@ export default function CreateEventPage() {
           location: location.trim(),
           eventDate,
           guidelines,
-          // For now the browser sends who is creating the event. JWT will replace this later.
-          creatorEmail: session?.user.email,
-          creatorName: session?.user.name,
-          creatorPhoto: session?.user.image ?? "",
         }),
       });
       const data = await res.json();
