@@ -10,11 +10,11 @@ import {
   ChevronDown,
   ClipboardList,
   Heart,
-  LogOut,
   Menu,
   Moon,
   Sun,
   Ticket,
+  UserRound,
   X,
 } from "lucide-react";
 
@@ -24,7 +24,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut, useSession } from "@/lib/auth-client";
@@ -36,6 +35,7 @@ const navLinks = [
 ];
 
 const menuLinks = [
+  { href: "/profile", label: "My Profile", icon: UserRound },
   { href: "/create-event", label: "Create Event", icon: CalendarPlus },
   { href: "/manage-events", label: "Manage Events", icon: ClipboardList },
   { href: "/joined-events", label: "Joined Events", icon: Ticket },
@@ -123,7 +123,7 @@ export default function Navbar() {
               </HeroButton>
             )}
 
-            {/* Logged in: avatar with dropdown, plus a Logout button in the bar */}
+            {/* Logged in: avatar with dropdown, plus a Log out button in the bar */}
             {!isPending && session && (
               <>
                 <DropdownMenu>
@@ -156,7 +156,7 @@ export default function Navbar() {
                       </p>
                     </div>
 
-                    {/* Private pages */}
+                    {/* Profile and private pages */}
                     {menuLinks.map(({ href, label, icon: Icon }) => (
                       <DropdownMenuItem
                         key={href}
@@ -167,26 +167,11 @@ export default function Navbar() {
                         {label}
                       </DropdownMenuItem>
                     ))}
-
-                    <DropdownMenuSeparator />
-
-                    {/* Log out inside the menu (this is the one phones use) */}
-                    <DropdownMenuItem
-                      onClick={handleLogout}
-                      className="cursor-pointer px-4 py-2 text-sm text-red-600 focus:bg-red-50 focus:text-red-600 dark:focus:bg-red-950/30"
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Log out
-                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Logout button in the bar, outside the dropdown (hidden on small phones) */}
-                <Button
-                  variant="outline"
-                  onClick={handleLogout}
-                  className="hidden rounded-full sm:inline-flex"
-                >
+                {/* Log out button in the bar */}
+                <Button variant="outline" onClick={handleLogout} className="rounded-full">
                   Log out
                 </Button>
               </>
