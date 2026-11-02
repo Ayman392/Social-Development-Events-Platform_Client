@@ -1,5 +1,6 @@
 "use client";
 
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -13,7 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import { useSession } from "@/lib/auth-client";
 import type { EventItem } from "@/lib/types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // Same badge colours as the event cards
 const typeColors: Record<string, string> = {
@@ -170,7 +170,7 @@ function ManageList() {
 
       try {
         // For now the browser sends the email. JWT will replace this later.
-        const res = await fetch(`${API_URL}/events/mine?email=${encodeURIComponent(userEmail)}`);
+        const res = await apiFetch("/events/mine");
         if (!res.ok) throw new Error("Request failed");
 
         const data: EventItem[] = await res.json();
@@ -202,8 +202,8 @@ function ManageList() {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(
-        `${API_URL}/events/${event._id}?email=${encodeURIComponent(userEmail ?? "")}`,
+      const res = await apiFetch(
+        `/events/${event._id}`,
         { method: "DELETE" }
       );
       const data = await res.json();
@@ -300,7 +300,6 @@ function ManageList() {
         <EditEventDialog
           key={editing._id}
           event={editing}
-          userEmail={userEmail}
           onClose={() => setEditing(null)}
           onSaved={handleSaved}
         />

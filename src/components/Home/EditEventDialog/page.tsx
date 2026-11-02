@@ -1,5 +1,6 @@
 "use client";
 
+import { apiFetch } from "@/lib/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { ChevronDown } from "lucide-react";
@@ -17,8 +18,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { validateUrl } from "@/lib/validators";
 import type { EventItem } from "@/lib/types";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const eventTypes = [
   "Cleanup",
@@ -39,7 +38,6 @@ type FormErrors = Partial<
 
 type Props = {
   event: EventItem;
-  userEmail: string;
   onClose: () => void;
   onSaved: (updated: EventItem) => void;
 };
@@ -55,7 +53,7 @@ function getTomorrow() {
 
 const inputClass = "h-12 rounded-2xl border-0 bg-slate-200/60 px-5 dark:bg-zinc-800/80";
 
-export default function EditEventDialog({ event, userEmail, onClose, onSaved }: Props) {
+export default function EditEventDialog({ event, onClose, onSaved }: Props) {
   // The form starts filled with the current event data
   const [title, setTitle] = useState(event.title);
   const [description, setDescription] = useState(event.description);
@@ -112,7 +110,7 @@ export default function EditEventDialog({ event, userEmail, onClose, onSaved }: 
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/events/${event._id}`, {
+      const res = await apiFetch(`/events/${event._id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -123,8 +121,6 @@ export default function EditEventDialog({ event, userEmail, onClose, onSaved }: 
           location: location.trim(),
           eventDate,
           guidelines,
-          // For now the browser says who is editing. JWT will replace this later.
-          userEmail,
         }),
       });
       const data = await res.json();
