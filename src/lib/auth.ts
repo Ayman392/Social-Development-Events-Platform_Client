@@ -10,6 +10,7 @@ export const auth = betterAuth({
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      overrideUserInfoOnSignIn: true, // use the github name and photo every single time when someone signs to github
     },
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
