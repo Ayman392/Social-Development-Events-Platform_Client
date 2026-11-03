@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, CalendarDays, Heart, MapPin, Ticket } from "lucide-react";
 import { Button } from "@heroui/react";
 
+import { apiFetch } from "@/lib/api";
 import PrivateRoute from "@/components/Home/PrivateRoute/page";
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "@/lib/auth-client";
 import type { JoinedEventItem } from "@/lib/types";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // Same badge colours as the event cards
 const typeColors: Record<string, string> = {
@@ -141,7 +140,7 @@ function JoinedList() {
 
       try {
         // For now the browser sends the email. JWT will replace this later.
-        const res = await fetch(`${API_URL}/joined-events?email=${encodeURIComponent(userEmail)}`);
+        const res = await apiFetch(`/joined-events`);
         if (!res.ok) throw new Error("Request failed");
 
         const data: JoinedEventItem[] = await res.json();
