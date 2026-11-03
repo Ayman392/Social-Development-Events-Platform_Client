@@ -10,6 +10,7 @@ import { Button } from "@heroui/react";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "@/lib/auth-client";
+import { apiFetch } from "@/lib/api"; 
 import type { EventItem } from "@/lib/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -102,8 +103,8 @@ export default function EventDetailsPage() {
       if (!userEmail) return;
 
       try {
-        const res = await fetch(
-          `${API_URL}/events/${eventId}/is-joined?email=${encodeURIComponent(userEmail)}`
+        const res = await apiFetch(
+          `/events/${eventId}/is-joined`
         );
         const data = await res.json();
         setJoined(Boolean(data.joined));
@@ -125,15 +126,16 @@ export default function EventDetailsPage() {
 
     setJoining(true);
     try {
-      const res = await fetch(`${API_URL}/events/${eventId}/join`, {
+      const res = await apiFetch(`/events/${eventId}/join`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userEmail: session.user.email,
-          userName: session.user.name,
-        }),
       });
       const data = await res.json();
+
+      if (res.status === 401) {
+        toast.error("Your session has expired. Please log in again.");
+        router.push("/login");
+        return;
+      }
 
       if (!res.ok) {
         toast.error(data.message || "Could not join the event.");
