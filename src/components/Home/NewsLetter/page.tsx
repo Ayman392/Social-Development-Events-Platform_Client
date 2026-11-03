@@ -57,7 +57,7 @@ export default function Newsletter() {
             {/* iOS system blue button */}
             <Button
               type="submit"
-              className="h-12 w-full rounded-full bg-[#007AFF] text-base font-semibold text-white shadow-md shadow-blue-500/30 transition-transform hover:bg-[#0a84ff] active:scale-[0.98]"
+              className="h-12 w-full rounded-full bg-slate-900 px-6 text-sm font-semibold text-white dark:bg-white dark:text-slate-900"
             >
               Subscribe
             </Button>

@@ -121,7 +121,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-8 text-sm text-slate-500 sm:flex-row">
-          <p>© 2026 HopeNetwork. All rights reserved.</p>
+          <p>© 2026 Oikyo. All rights reserved.</p>
           <p className="flex items-center gap-1.5">
             Made with <Heart className="h-4 w-4 text-rose-500" fill="currentColor" /> in Bangladesh
           </p>
