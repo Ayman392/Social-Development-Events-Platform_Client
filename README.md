@@ -26,14 +26,12 @@ This repository contains the **client** (frontend) of the project.
 
 ## Features
 
-| | Feature | What it does |
-|---|---|---|
-| 📅 | **Upcoming Events** | Browse community events and open a details page for each one |
-| ➕ | **Create Event** | Organizers publish a new event with its details and category |
-| 🛠️ | **Manage Events** | Update events through a dialog and delete them with a confirmation prompt |
-| 🎟️ | **Joined Events** | See every event you have joined in one place |
-| 🖼️ | **Gallery** | A photo gallery section on the home page |
-| 🔐 | **Authentication** | Sign in and sign up with Better Auth |
+- 📅 **Upcoming Events:** browse community service events and open a details page for each one, without needing to log in
+- ➕ **Create Event:** logged-in users can publish an event with a title, description, category, thumbnail, location, and a future date
+- 🎟️ **Join Events:** join any event with one click, and see every event you have joined on the Joined Events page
+- 🛠️ **Manage Events:** update your own events through a dialog and delete them with a SweetAlert confirmation
+- 🔐 **Secure Authentication:** email and password sign in and sign up powered by Better Auth, with private routes for logged-in users
+- 🖼️ **Gallery:** a photo gallery showcasing community service work across Bangladesh
 
 ### Event Categories
 
