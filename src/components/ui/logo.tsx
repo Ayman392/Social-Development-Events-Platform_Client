@@ -1,18 +1,22 @@
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type LogoProps = {
   size?: number;
+  href?: string;
+  className?: string;
 };
 
-export default function Logo({ size = 32 }: LogoProps) {
+export default function Logo({ href = "/", size = 32, className }: LogoProps) {
   return (
-    <Link href="/" className="flex shrink-0 items-center" aria-label="Oikyo home">
+    <Link href="/" className="flex shrink-0 items-center mb-3" aria-label="Oikyo home">
       <svg
         width={size}
         height={size}
+        href={href}
         viewBox="0 0 120 120"
         aria-hidden="true"
-        className="mr-3 shrink-0"
+        className={cn("flex shrink-0 items-center mr-3", className)}
       >
         {/* Dark rounded square with a faint edge, so it also shows up on dark pages */}
         <rect

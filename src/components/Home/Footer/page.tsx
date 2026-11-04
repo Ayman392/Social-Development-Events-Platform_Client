@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
-import { CalendarDays, CalendarPlus, ClipboardList, Heart, Image, Mail, MapPin, Ticket } from "lucide-react";
+import { CalendarDays, CalendarPlus, ClipboardList, Image, Mail, MapPin, Ticket } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import Logo from "@/components/ui/logo";
 
 const exploreLinks = [
   { label: "Upcoming Events", href: "/events", icon: CalendarDays },
@@ -41,12 +42,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Logo, description and social icons */}
           <div>
-            <Link href="/" className="mb-5 flex items-center" aria-label="HopeNetwork home">
-              <div className="mr-3 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
-                <Heart className="h-5 w-5 text-white" fill="currentColor" />
-              </div>
-              <span className="text-xl font-semibold tracking-tight text-white">Oikyo</span>
-            </Link>
+              <Logo/>
 
             <p className="mb-6 text-sm leading-relaxed text-slate-400">
               Connecting passionate volunteers with community service events to drive meaningful
@@ -123,7 +119,7 @@ export default function Footer() {
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-8 text-sm text-slate-500 sm:flex-row">
           <p>© 2026 Oikyo. All rights reserved.</p>
           <p className="flex items-center gap-1.5">
-            Made with <Heart className="h-4 w-4 text-rose-500" fill="currentColor" /> in Bangladesh
+            Made by Ayman
           </p>
         </div>
       </div>
