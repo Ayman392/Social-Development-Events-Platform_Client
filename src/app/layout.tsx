@@ -5,7 +5,6 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Home/Navbar/page";
 import Footer from "@/components/Home/Footer/page";
-import PageLoader from "@/components/Home/PageLoader/page";
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -16,7 +15,7 @@ const fontSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Oikyo",
   description:
-    "Discover and join community service events across Bangladesh, or create your own.",
+    "Oikyo brings volunteers and organizers together. Find upcoming community service events across Bangladesh, join a cause near you, or create your own event.",
 };
 
 // Runs before the page becomes interactive, so the saved theme is applied with no flash
@@ -40,7 +39,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: themeScript }}
         />
         <Navbar />
-        <PageLoader />
         <main className="flex-1">{children}</main>
         <Footer />
         <Toaster position="top-right" />

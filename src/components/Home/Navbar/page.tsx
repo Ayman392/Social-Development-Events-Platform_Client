@@ -9,7 +9,6 @@ import {
   CalendarPlus,
   ChevronDown,
   ClipboardList,
-  Heart,
   Menu,
   Moon,
   Sun,
@@ -27,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut, useSession } from "@/lib/auth-client";
+import Logo from "@/components/ui/logo";
 
 const navLinks = [
   { href: "/events", label: "Upcoming Events" },
@@ -74,13 +74,7 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex shrink-0 items-center" aria-label="Oikyo home">
-            <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 shadow-sm">
-              <Heart className="h-5 w-5 text-white" fill="currentColor" />
-            </div>
-            <span className="text-xl font-semibold tracking-tight">Oikyo</span>
-          </Link>
-
+            <Logo/>
           {/* Center links */}
           <div className="hidden space-x-8 md:flex">
             {navLinks.map((link) => (

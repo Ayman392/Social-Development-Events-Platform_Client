@@ -1,4 +1,5 @@
 import Features from "@/components/Home/Features/page";
+import EventExplorer from "@/components/Home/EventExplorer/page";
 import Gallery from "@/components/Home/Gallery/page";
 import Hero from "@/components/Home/Hero/page";
 import HowItWorks from "@/components/Home/HowItWorks/page";
@@ -11,6 +12,7 @@ export default function HomePage() {
       <Hero />
       <Features/>
       <HowItWorks/>
+      <EventExplorer />
       <UpcomingEvents/>
       <Gallery/>
       <Newsletter/>

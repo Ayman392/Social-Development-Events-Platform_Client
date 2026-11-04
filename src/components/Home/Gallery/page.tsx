@@ -1,41 +1,112 @@
 "use client";
 
-import { useState } from "react";
-import { ZoomIn } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Heart, ZoomIn } from "lucide-react";
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import type { EventItem } from "@/lib/types";
 
-// Replace these with your own photos and descriptions whenever you like
-const photos = [
-  {
-    src: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=800",
-    alt: "Children smiling together at a community event",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&q=80&w=800",
-    alt: "Volunteers working together in a community",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800",
-    alt: "Volunteers at a food donation drive",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800",
-    alt: "Volunteers taking part in a community activity",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&q=80&w=800",
-    alt: "People gathered for a community cleanup",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1593113593332-cd288d649433?auto=format&fit=crop&q=80&w=800",
-    alt: "Volunteers handing out supplies to families",
-  },
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+type Photo = { src: string; alt: string };
+
+// One photo for each type of event, so the gallery shows different kinds of work
+const eventTypes = [
+  "Cleanup",
+  "Plantation",
+  "Donation",
+  "Education",
+  "Health Camp",
+  "Food Distribution",
 ];
 
+// Pick up to 6 different photos from the events
+function pickPhotos(events: EventItem[]): Photo[] {
+  const used = new Set<string>();
+  const photos: Photo[] = [];
+
+  // First, one event of each type
+  for (const type of eventTypes) {
+    const event = events.find(
+      (e) => e.eventType === type && e.thumbnail && !used.has(e.thumbnail)
+    );
+    if (event) {
+      used.add(event.thumbnail);
+      photos.push({ src: event.thumbnail, alt: event.title });
+    }
+  }
+
+  // If a type had no event, fill the rest with any other events
+  for (const event of events) {
+    if (photos.length >= 6) break;
+    if (event.thumbnail && !used.has(event.thumbnail)) {
+      used.add(event.thumbnail);
+      photos.push({ src: event.thumbnail, alt: event.title });
+    }
+  }
+
+  return photos;
+}
+
+// One photo tile. If its photo fails to load, it shows a blue fallback instead of a broken icon.
+function GalleryTile({ photo, onOpen }: { photo: Photo; onOpen: () => void }) {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <button
+      type="button"
+      onClick={failed ? undefined : onOpen}
+      className="group relative aspect-square overflow-hidden rounded-3xl shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      aria-label={failed ? photo.alt : `View larger: ${photo.alt}`}
+    >
+      {failed ? (
+        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600">
+          <Heart className="h-12 w-12 text-white/80" fill="currentColor" />
+        </div>
+      ) : (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            onError={() => setFailed(true)}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+
+          {/* Zoom icon on hover */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/40">
+            <div className="flex h-12 w-12 scale-75 items-center justify-center rounded-full bg-white/90 text-slate-900 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+              <ZoomIn className="h-5 w-5" />
+            </div>
+          </div>
+        </>
+      )}
+    </button>
+  );
+}
+
 export default function Gallery() {
-  // The photo currently shown in the large view (null means closed)
-  const [selected, setSelected] = useState<(typeof photos)[number] | null>(null);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [selected, setSelected] = useState<Photo | null>(null);
+
+  useEffect(() => {
+    async function loadPhotos() {
+      try {
+        const res = await fetch(`${API_URL}/events/upcoming`);
+        if (!res.ok) throw new Error("Request failed");
+
+        const events: EventItem[] = await res.json();
+        setPhotos(pickPhotos(events));
+        setStatus("ready");
+      } catch {
+        setStatus("error");
+      }
+    }
+
+    loadPhotos();
+  }, []);
 
   return (
     <section id="gallery" className="scroll-mt-24 pt-8">
@@ -47,41 +118,43 @@ export default function Gallery() {
         </p>
       </div>
 
-      {/* Equal-size photo grid */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
-        {photos.map((photo) => (
-          <button
-            key={photo.src}
-            type="button"
-            onClick={() => setSelected(photo)}
-            className="group relative aspect-square overflow-hidden rounded-3xl shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-            aria-label={`View larger: ${photo.alt}`}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photo.src}
-              alt={photo.alt}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+      {/* Loading */}
+      {status === "loading" && (
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <div
+              key={n}
+              className="aspect-square animate-pulse rounded-3xl bg-slate-200 dark:bg-zinc-800"
             />
+          ))}
+        </div>
+      )}
 
-            {/* Dark layer with a zoom icon, shown on hover */}
-            <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/40">
-              <div className="flex h-12 w-12 scale-75 items-center justify-center rounded-full bg-white/90 text-slate-900 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
-                <ZoomIn className="h-5 w-5" />
-              </div>
-            </div>
-          </button>
-        ))}
-      </div>
+      {/* Could not load, or no events yet */}
+      {(status === "error" || (status === "ready" && photos.length === 0)) && (
+        <p className="glass-panel rounded-2xl p-8 text-center text-slate-600 dark:text-slate-400">
+          Photos from our community events will appear here soon.
+        </p>
+      )}
+
+      {/* Equal-size photo grid */}
+      {status === "ready" && photos.length > 0 && (
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
+          {photos.map((photo) => (
+            <GalleryTile key={photo.src} photo={photo} onOpen={() => setSelected(photo)} />
+          ))}
+        </div>
+      )}
 
       {/* Large view */}
       <Dialog open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent className="p-2 sm:max-w-4xl">
           <DialogTitle className="sr-only">{selected?.alt}</DialogTitle>
+
           {selected && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={selected.src.replace("w=800", "w=1600")}
+              src={selected.src.replace(/w=\d+/, "w=1600")}
               alt={selected.alt}
               className="max-h-[80vh] w-full rounded-xl object-contain"
             />

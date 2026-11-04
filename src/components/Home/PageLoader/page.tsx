@@ -1,13 +1,28 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function PageLoader() {
-  const pathname = usePathname();
+  const [visible, setVisible] = useState(true);
+  const [mounted, setMounted] = useState(true);
 
-  // The key changes with every page, so the spinner starts again each time
+  useEffect(() => {
+    const fadeTimeoutId = window.setTimeout(() => setVisible(false), 500);
+    const removeTimeoutId = window.setTimeout(() => setMounted(false), 650);
+
+    return () => {
+      window.clearTimeout(fadeTimeoutId);
+      window.clearTimeout(removeTimeoutId);
+    };
+  }, []);
+
+  if (!mounted) return null;
+
   return (
-    <div key={pathname} className="page-loader" aria-hidden="true">
+    <div
+      className={`page-loader ${visible ? "page-loader-visible" : "page-loader-hidden"}`}
+      aria-hidden="true"
+    >
       <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
     </div>
   );

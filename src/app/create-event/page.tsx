@@ -2,6 +2,7 @@
 
 import { apiFetch } from "@/lib/api";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { CalendarPlus, ChevronDown, Heart } from "lucide-react";
@@ -12,6 +13,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { validateUrl } from "@/lib/validators";
+import type { EventCoordinates } from "@/lib/types";
+
+const LocationPicker = dynamic(
+  () => import("@/components/Home/EventExplorer/map").then((module) => module.LocationPicker),
+  { ssr: false, loading: () => <div className="h-64 animate-pulse rounded-2xl bg-slate-200 dark:bg-zinc-800 sm:h-72" /> }
+);
 
 const eventTypes = [
   "Cleanup",
@@ -25,7 +32,7 @@ const eventTypes = [
 
 type FormErrors = Partial<
   Record<
-    "title" | "description" | "eventType" | "thumbnail" | "location" | "eventDate" | "guidelines",
+    "title" | "description" | "eventType" | "thumbnail" | "location" | "eventDate" | "guidelines" | "coordinates",
     string
   >
 >;
@@ -49,6 +56,7 @@ export default function CreateEventPage() {
   const [eventType, setEventType] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [location, setLocation] = useState("");
+  const [coordinates, setCoordinates] = useState<EventCoordinates | null>(null);
   const [eventDate, setEventDate] = useState("");
   const [guidelinesText, setGuidelinesText] = useState("");
   const [imageFailed, setImageFailed] = useState(false);
@@ -110,6 +118,7 @@ export default function CreateEventPage() {
           eventType,
           thumbnail: thumbnail.trim(),
           location: location.trim(),
+          ...(coordinates ? { coordinates } : {}),
           eventDate,
           guidelines,
         }),
@@ -214,6 +223,35 @@ export default function CreateEventPage() {
               className={inputClass}
             />
             {errors.location && <p className="px-2 text-sm text-red-500">{errors.location}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <div>
+              <Label>Map location (optional)</Label>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Select the event location on the map to add an accurate pin. No coordinates are inferred from the address.
+              </p>
+            </div>
+            <LocationPicker value={coordinates} onChange={setCoordinates} />
+            {coordinates ? (
+              <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500 dark:text-slate-400">
+                <span>
+                  Confirmed pin: {coordinates.latitude.toFixed(5)}, {coordinates.longitude.toFixed(5)}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setCoordinates(null)}
+                  className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  Remove pin
+                </button>
+              </div>
+            ) : (
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                No map pin selected. The event can still be created and will appear in Calendar and List views.
+              </p>
+            )}
+            {errors.coordinates && <p className="px-2 text-sm text-red-500">{errors.coordinates}</p>}
           </div>
 
           {/* Thumbnail with preview */}

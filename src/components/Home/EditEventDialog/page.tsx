@@ -2,6 +2,7 @@
 
 import { apiFetch } from "@/lib/api";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@heroui/react";
@@ -18,7 +19,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { validateUrl } from "@/lib/validators";
 import type { EventItem } from "@/lib/types";
+import type { EventCoordinates } from "@/lib/types";
 
+const LocationPicker = dynamic(
+  () => import("@/components/Home/EventExplorer/map").then((module) => module.LocationPicker),
+  { ssr: false, loading: () => <div className="h-64 animate-pulse rounded-2xl bg-slate-200 dark:bg-zinc-800 sm:h-72" /> }
+);
 const eventTypes = [
   "Cleanup",
   "Plantation",
@@ -31,7 +37,7 @@ const eventTypes = [
 
 type FormErrors = Partial<
   Record<
-    "title" | "description" | "eventType" | "thumbnail" | "location" | "eventDate" | "guidelines",
+    "title" | "description" | "eventType" | "thumbnail" | "location" | "eventDate" | "guidelines" | "coordinates",
     string
   >
 >;
@@ -60,6 +66,8 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
   const [eventType, setEventType] = useState(event.eventType);
   const [thumbnail, setThumbnail] = useState(event.thumbnail);
   const [location, setLocation] = useState(event.location);
+  const [coordinates, setCoordinates] = useState<EventCoordinates | null>(event.coordinates ?? null);
+  const [coordinatesChanged, setCoordinatesChanged] = useState(false);
   const [eventDate, setEventDate] = useState(event.eventDate.slice(0, 10));
   const [guidelinesText, setGuidelinesText] = useState((event.guidelines ?? []).join("\n"));
   const [errors, setErrors] = useState<FormErrors>({});
@@ -119,6 +127,7 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
           eventType,
           thumbnail: thumbnail.trim(),
           location: location.trim(),
+          ...(coordinatesChanged ? { coordinates: coordinates ?? null } : {}),
           eventDate,
           guidelines,
         }),
@@ -139,6 +148,7 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
         eventType,
         thumbnail: thumbnail.trim(),
         location: location.trim(),
+        coordinates: coordinates ?? undefined,
         eventDate: `${eventDate}T00:00:00.000Z`,
         guidelines,
       });
@@ -223,6 +233,44 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
               className={inputClass}
             />
             {errors.location && <p className="px-2 text-sm text-red-500">{errors.location}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <div>
+              <Label>Map location (optional)</Label>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Select the event location on the map to confirm its pin. The address is not geocoded automatically.
+              </p>
+            </div>
+            <LocationPicker
+              value={coordinates}
+              onChange={(value) => {
+                setCoordinates(value);
+                setCoordinatesChanged(true);
+              }}
+            />
+            {coordinates ? (
+              <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500 dark:text-slate-400">
+                <span>
+                  Confirmed pin: {coordinates.latitude.toFixed(5)}, {coordinates.longitude.toFixed(5)}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCoordinates(null);
+                    setCoordinatesChanged(true);
+                  }}
+                  className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  Remove pin
+                </button>
+              </div>
+            ) : (
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                No map pin selected. The event remains available in Calendar and List views.
+              </p>
+            )}
+            {errors.coordinates && <p className="px-2 text-sm text-red-500">{errors.coordinates}</p>}
           </div>
 
           {/* Thumbnail */}
