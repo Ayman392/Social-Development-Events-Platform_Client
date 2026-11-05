@@ -9,7 +9,7 @@ type LogoProps = {
 
 export default function Logo({ href = "/", size = 32, className }: LogoProps) {
   return (
-    <Link href="/" className="flex shrink-0 items-center mb-3" aria-label="Oikyo home">
+    <Link href="/" className="flex shrink-0 items-center" aria-label="Oikyo home">
       <svg
         width={size}
         height={size}
