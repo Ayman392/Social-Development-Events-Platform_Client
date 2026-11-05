@@ -1,12 +1,32 @@
 "use client";
 
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { ArrowRight, MapPin, Users } from "lucide-react";
+import { ArrowRight, Map as MapIcon, MapPin, Users } from "lucide-react";
 import { Button } from "@heroui/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import type { EventItem } from "@/lib/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { hasValidEventCoordinates, type EventItem } from "@/lib/types";
+
+// Leaflet needs the browser, so the map is loaded on the client only
+const EventLocationMap = dynamic(
+  () => import("@/components/Home/EventExplorer/map").then((module) => module.EventLocationMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-72 animate-pulse rounded-2xl bg-slate-200 dark:bg-zinc-800 sm:h-80" />
+    ),
+  }
+);
 
 // Each event type gets its own badge color
 const typeColors: Record<string, string> = {
@@ -31,6 +51,8 @@ function getDateParts(date: string) {
 
 export default function EventCard({ event }: { event: EventItem }) {
   const router = useRouter();
+  const [mapOpen, setMapOpen] = useState(false);
+  const hasMap = hasValidEventCoordinates(event.coordinates);
   const { day, month, year } = getDateParts(event.eventDate);
   const badgeColor = typeColors[event.eventType] || typeColors.Other;
 
@@ -86,13 +108,40 @@ export default function EventCard({ event }: { event: EventItem }) {
           </div>
         </div>
 
-        <Button
-          onPress={() => router.push(`/events/${event._id}`)}
-          className="h-11 w-full rounded-full bg-slate-900 text-sm font-medium text-white dark:bg-white dark:text-slate-900"
-        >
-          View Event
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </Button>
+        {/* View Event button, plus a map button when the event has a pin */}
+        <div className="flex gap-3">
+          <Button
+            onPress={() => router.push(`/events/${event._id}`)}
+            className="h-11 flex-1 rounded-full bg-slate-900 text-sm font-medium text-white dark:bg-white dark:text-slate-900"
+          >
+            View Event
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Button>
+
+          {hasMap && (
+            <Button
+              isIconOnly
+              aria-label={`View ${event.title} on map`}
+              onPress={() => setMapOpen(true)}
+              className="h-11 w-11 shrink-0 rounded-full border border-slate-300 bg-transparent text-slate-900 dark:border-zinc-600 dark:text-white"
+            >
+              <MapIcon className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+
+        {/* The map pop-up (only exists for events with a pin) */}
+        {hasMap && (
+          <Dialog open={mapOpen} onOpenChange={setMapOpen}>
+            <DialogContent className="rounded-[2rem] sm:max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="text-xl font-bold">{event.title}</DialogTitle>
+                <DialogDescription>{event.location}</DialogDescription>
+              </DialogHeader>
+              <EventLocationMap event={event} />
+            </DialogContent>
+          </Dialog>
+        )}
       </CardContent>
     </Card>
   );

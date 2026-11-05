@@ -388,3 +388,45 @@ export function LocationPicker({
     </MapContainer>
   );
 }
+  // Keeps the map sized correctly when it opens inside a Dialog (the open animation
+// makes Leaflet measure the container too early and leaves grey tiles)
+function InvalidateSizeOnOpen() {
+  const map = useMap();
+
+  useEffect(() => {
+    const id = window.setTimeout(() => map.invalidateSize(), 250);
+    return () => window.clearTimeout(id);
+  }, [map]);
+
+  return null;
+}
+
+// Map for one event, used inside the event card dialog
+export function EventLocationMap({ event }: { event: EventItem }) {
+  if (!hasValidEventCoordinates(event.coordinates)) return null;
+
+  const position: [number, number] = [
+    event.coordinates.latitude,
+    event.coordinates.longitude,
+  ];
+
+  return (
+    <MapContainer
+      center={position}
+      zoom={15}
+      scrollWheelZoom={false}
+      className="h-72 w-full rounded-2xl sm:h-80"
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        className="oikyo-map-tiles"
+      />
+      <InvalidateSizeOnOpen />
+      <Marker
+        position={position}
+        icon={createEventIcon(event.eventType?.trim() || "Other")}
+      />
+    </MapContainer>
+  );
+}
