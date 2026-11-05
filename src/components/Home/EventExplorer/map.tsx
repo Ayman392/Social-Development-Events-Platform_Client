@@ -17,6 +17,9 @@ import { MapPin } from "lucide-react";
 
 import { hasValidEventCoordinates, type EventCoordinates, type EventItem } from "@/lib/types";
 
+// Default view when the explorer map opens: Dhaka city
+const defaultCenter: [number, number] = [23.745, 90.395];
+const defaultZoom = 14;
 const bangladeshCenter: [number, number] = [23.8103, 90.4125];
 const markerClusterRadius = 42;
 const maxClusterZoom = 18;
@@ -296,29 +299,11 @@ function EventMarkers({ events }: { events: EventItem[] }) {
   });
 }
 
-function FitEventMarkers({ events }: { events: EventItem[] }) {
-  const map = useMap();
-
-  useEffect(() => {
-    const points = events.flatMap((event) =>
-      hasValidEventCoordinates(event.coordinates)
-        ? [[event.coordinates.latitude, event.coordinates.longitude] as [number, number]]
-        : []
-    );
-
-    if (points.length > 0) {
-      map.fitBounds(L.latLngBounds(points), { padding: [36, 36], maxZoom: 12 });
-    }
-  }, [events, map]);
-
-  return null;
-}
-
 export function EventMap({ events }: { events: EventItem[] }) {
   return (
     <MapContainer
-      center={bangladeshCenter}
-      zoom={7}
+      center={defaultCenter}
+      zoom={defaultZoom}
       scrollWheelZoom={false}
       className="h-[24rem] w-full rounded-2xl sm:h-[30rem]"
     >
@@ -327,7 +312,6 @@ export function EventMap({ events }: { events: EventItem[] }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         className="oikyo-map-tiles"
       />
-      <FitEventMarkers events={events} />
       <EventMarkers events={events} />
     </MapContainer>
   );
