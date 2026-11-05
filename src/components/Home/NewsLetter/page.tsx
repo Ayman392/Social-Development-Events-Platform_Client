@@ -38,9 +38,12 @@ export default function Newsletter() {
             <Mail className="h-8 w-8 text-white" />
           </div>
 
-          <h2 className="mb-3 text-3xl font-bold tracking-tight">Stay Updated on New Causes</h2>
+          <h2 className="mb-3 text-3xl font-bold tracking-tight">
+            Stay Updated on New Causes
+          </h2>
           <p className="mb-8 text-slate-500 dark:text-slate-400">
-            Get weekly updates on volunteering opportunities and community impact stories.
+            Get weekly updates on volunteering opportunities and community
+            impact stories.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-3" noValidate>

@@ -16,8 +16,16 @@ import { validateUrl } from "@/lib/validators";
 import type { EventCoordinates } from "@/lib/types";
 
 const LocationPicker = dynamic(
-  () => import("@/components/Home/EventExplorer/map").then((module) => module.LocationPicker),
-  { ssr: false, loading: () => <div className="h-64 animate-pulse rounded-2xl bg-slate-200 dark:bg-zinc-800 sm:h-72" /> }
+  () =>
+    import("@/components/Home/EventExplorer/map").then(
+      (module) => module.LocationPicker,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse rounded-2xl bg-slate-200 dark:bg-zinc-800 sm:h-72" />
+    ),
+  },
 );
 
 const eventTypes = [
@@ -32,7 +40,14 @@ const eventTypes = [
 
 type FormErrors = Partial<
   Record<
-    "title" | "description" | "eventType" | "thumbnail" | "location" | "eventDate" | "guidelines" | "coordinates",
+    | "title"
+    | "description"
+    | "eventType"
+    | "thumbnail"
+    | "location"
+    | "eventDate"
+    | "guidelines"
+    | "coordinates",
     string
   >
 >;
@@ -46,7 +61,8 @@ function getTomorrow() {
   return `${d.getFullYear()}-${month}-${day}`;
 }
 
-const inputClass = "h-12 rounded-2xl border-0 bg-slate-200/60 px-5 dark:bg-zinc-800/80";
+const inputClass =
+  "h-12 rounded-2xl border-0 bg-slate-200/60 px-5 dark:bg-zinc-800/80";
 
 export default function CreateEventPage() {
   const router = useRouter();
@@ -81,7 +97,8 @@ export default function CreateEventPage() {
       newErrors.title = "Title must be between 3 and 100 characters.";
     }
     if (description.trim().length < 20 || description.trim().length > 1000) {
-      newErrors.description = "Description must be between 20 and 1000 characters.";
+      newErrors.description =
+        "Description must be between 20 and 1000 characters.";
     }
     if (!eventType) {
       newErrors.eventType = "Please choose an event type.";
@@ -97,8 +114,12 @@ export default function CreateEventPage() {
     } else if (eventDate < tomorrow) {
       newErrors.eventDate = "The event date must be in the future.";
     }
-    if (guidelines.length > 6 || guidelines.some((line) => line.length < 3 || line.length > 150)) {
-      newErrors.guidelines = "Add up to 6 guidelines, each 3 to 150 characters.";
+    if (
+      guidelines.length > 6 ||
+      guidelines.some((line) => line.length < 3 || line.length > 150)
+    ) {
+      newErrors.guidelines =
+        "Add up to 6 guidelines, each 3 to 150 characters.";
     }
 
     setErrors(newErrors);
@@ -149,13 +170,19 @@ export default function CreateEventPage() {
           <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-500/30">
             <CalendarPlus className="h-7 w-7 text-white" />
           </div>
-          <h1 className="mb-2 text-3xl font-bold tracking-tight">Create an Event</h1>
+          <h1 className="mb-2 text-3xl font-bold tracking-tight">
+            Create an Event
+          </h1>
           <p className="text-slate-500 dark:text-slate-400">
             Organize a community service event and invite volunteers to join.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="glass-panel space-y-6 rounded-[2rem] p-6 shadow-xl sm:p-8" noValidate>
+        <form
+          onSubmit={handleSubmit}
+          className="glass-panel space-y-6 rounded-[2rem] p-6 shadow-xl sm:p-8"
+          noValidate
+        >
           {/* Title */}
           <div className="space-y-2">
             <Label htmlFor="title">Event title</Label>
@@ -167,33 +194,37 @@ export default function CreateEventPage() {
               aria-invalid={Boolean(errors.title)}
               className={inputClass}
             />
-            {errors.title && <p className="px-2 text-sm text-red-500">{errors.title}</p>}
+            {errors.title && (
+              <p className="px-2 text-sm text-red-500">{errors.title}</p>
+            )}
           </div>
 
           {/* Type and date, side by side on wide screens */}
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="eventType">Event type</Label>
-<div className="relative">
-  <select
-    id="eventType"
-    value={eventType}
-    onChange={(e) => setEventType(e.target.value)}
-    aria-invalid={Boolean(errors.eventType)}
-    className="h-12 w-full appearance-none rounded-2xl border-0 bg-slate-200/60 pl-5 pr-12 text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 dark:bg-zinc-800/80"
-  >
-    <option value="">Choose a type</option>
-    {eventTypes.map((type) => (
-      <option key={type} value={type}>
-        {type}
-      </option>
-    ))}
-  </select>
+              <div className="relative">
+                <select
+                  id="eventType"
+                  value={eventType}
+                  onChange={(e) => setEventType(e.target.value)}
+                  aria-invalid={Boolean(errors.eventType)}
+                  className="h-12 w-full appearance-none rounded-2xl border-0 bg-slate-200/60 pl-5 pr-12 text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 dark:bg-zinc-800/80"
+                >
+                  <option value="">Choose a type</option>
+                  {eventTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
 
-  {/* Our own arrow, with space from the edge */}
-  <ChevronDown className="pointer-events-none absolute right-5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
-</div>
-              {errors.eventType && <p className="px-2 text-sm text-red-500">{errors.eventType}</p>}
+                {/* Our own arrow, with space from the edge */}
+                <ChevronDown className="pointer-events-none absolute right-5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
+              </div>
+              {errors.eventType && (
+                <p className="px-2 text-sm text-red-500">{errors.eventType}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -207,7 +238,9 @@ export default function CreateEventPage() {
                 aria-invalid={Boolean(errors.eventDate)}
                 className={inputClass}
               />
-              {errors.eventDate && <p className="px-2 text-sm text-red-500">{errors.eventDate}</p>}
+              {errors.eventDate && (
+                <p className="px-2 text-sm text-red-500">{errors.eventDate}</p>
+              )}
             </div>
           </div>
 
@@ -222,21 +255,25 @@ export default function CreateEventPage() {
               aria-invalid={Boolean(errors.location)}
               className={inputClass}
             />
-            {errors.location && <p className="px-2 text-sm text-red-500">{errors.location}</p>}
+            {errors.location && (
+              <p className="px-2 text-sm text-red-500">{errors.location}</p>
+            )}
           </div>
 
           <div className="space-y-2">
             <div>
               <Label>Map location (optional)</Label>
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                Select the event location on the map to add an accurate pin. No coordinates are inferred from the address.
+                Select the event location on the map to add an accurate pin. No
+                coordinates are inferred from the address.
               </p>
             </div>
             <LocationPicker value={coordinates} onChange={setCoordinates} />
             {coordinates ? (
               <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500 dark:text-slate-400">
                 <span>
-                  Confirmed pin: {coordinates.latitude.toFixed(5)}, {coordinates.longitude.toFixed(5)}
+                  Confirmed pin: {coordinates.latitude.toFixed(5)},{" "}
+                  {coordinates.longitude.toFixed(5)}
                 </span>
                 <button
                   type="button"
@@ -248,10 +285,13 @@ export default function CreateEventPage() {
               </div>
             ) : (
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                No map pin selected. The event can still be created and will appear in Calendar and List views.
+                No map pin selected. The event can still be created and will
+                appear in Calendar and List views.
               </p>
             )}
-            {errors.coordinates && <p className="px-2 text-sm text-red-500">{errors.coordinates}</p>}
+            {errors.coordinates && (
+              <p className="px-2 text-sm text-red-500">{errors.coordinates}</p>
+            )}
           </div>
 
           {/* Thumbnail with preview */}
@@ -268,13 +308,18 @@ export default function CreateEventPage() {
               aria-invalid={Boolean(errors.thumbnail)}
               className={inputClass}
             />
-            {errors.thumbnail && <p className="px-2 text-sm text-red-500">{errors.thumbnail}</p>}
+            {errors.thumbnail && (
+              <p className="px-2 text-sm text-red-500">{errors.thumbnail}</p>
+            )}
 
             {validateUrl(thumbnail.trim()) && (
               <div className="mt-3 h-44 overflow-hidden rounded-2xl">
                 {imageFailed ? (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600">
-                    <Heart className="h-12 w-12 text-white/80" fill="currentColor" />
+                    <Heart
+                      className="h-12 w-12 text-white/80"
+                      fill="currentColor"
+                    />
                   </div>
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -306,7 +351,9 @@ export default function CreateEventPage() {
               aria-invalid={Boolean(errors.description)}
               className="rounded-2xl border-0 bg-slate-200/60 px-5 py-3 dark:bg-zinc-800/80"
             />
-            {errors.description && <p className="px-2 text-sm text-red-500">{errors.description}</p>}
+            {errors.description && (
+              <p className="px-2 text-sm text-red-500">{errors.description}</p>
+            )}
           </div>
 
           {/* Guidelines (optional) */}
@@ -316,12 +363,16 @@ export default function CreateEventPage() {
               id="guidelines"
               value={guidelinesText}
               onChange={(e) => setGuidelinesText(e.target.value)}
-              placeholder={"Write one guideline per line, up to 6.\nArrive 15 minutes early.\nWear comfortable shoes."}
+              placeholder={
+                "Write one guideline per line, up to 6.\nArrive 15 minutes early.\nWear comfortable shoes."
+              }
               rows={4}
               aria-invalid={Boolean(errors.guidelines)}
               className="rounded-2xl border-0 bg-slate-200/60 px-5 py-3 dark:bg-zinc-800/80"
             />
-            {errors.guidelines && <p className="px-2 text-sm text-red-500">{errors.guidelines}</p>}
+            {errors.guidelines && (
+              <p className="px-2 text-sm text-red-500">{errors.guidelines}</p>
+            )}
           </div>
 
           <Button

@@ -22,8 +22,16 @@ import type { EventItem } from "@/lib/types";
 import type { EventCoordinates } from "@/lib/types";
 
 const LocationPicker = dynamic(
-  () => import("@/components/Home/EventExplorer/map").then((module) => module.LocationPicker),
-  { ssr: false, loading: () => <div className="h-64 animate-pulse rounded-2xl bg-slate-200 dark:bg-zinc-800 sm:h-72" /> }
+  () =>
+    import("@/components/Home/EventExplorer/map").then(
+      (module) => module.LocationPicker,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-64 animate-pulse rounded-2xl bg-slate-200 dark:bg-zinc-800 sm:h-72" />
+    ),
+  },
 );
 const eventTypes = [
   "Cleanup",
@@ -37,7 +45,14 @@ const eventTypes = [
 
 type FormErrors = Partial<
   Record<
-    "title" | "description" | "eventType" | "thumbnail" | "location" | "eventDate" | "guidelines" | "coordinates",
+    | "title"
+    | "description"
+    | "eventType"
+    | "thumbnail"
+    | "location"
+    | "eventDate"
+    | "guidelines"
+    | "coordinates",
     string
   >
 >;
@@ -57,7 +72,8 @@ function getTomorrow() {
   return `${d.getFullYear()}-${month}-${day}`;
 }
 
-const inputClass = "h-12 rounded-2xl border-0 bg-slate-200/60 px-5 dark:bg-zinc-800/80";
+const inputClass =
+  "h-12 rounded-2xl border-0 bg-slate-200/60 px-5 dark:bg-zinc-800/80";
 
 export default function EditEventDialog({ event, onClose, onSaved }: Props) {
   // The form starts filled with the current event data
@@ -66,10 +82,14 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
   const [eventType, setEventType] = useState(event.eventType);
   const [thumbnail, setThumbnail] = useState(event.thumbnail);
   const [location, setLocation] = useState(event.location);
-  const [coordinates, setCoordinates] = useState<EventCoordinates | null>(event.coordinates ?? null);
+  const [coordinates, setCoordinates] = useState<EventCoordinates | null>(
+    event.coordinates ?? null,
+  );
   const [coordinatesChanged, setCoordinatesChanged] = useState(false);
   const [eventDate, setEventDate] = useState(event.eventDate.slice(0, 10));
-  const [guidelinesText, setGuidelinesText] = useState((event.guidelines ?? []).join("\n"));
+  const [guidelinesText, setGuidelinesText] = useState(
+    (event.guidelines ?? []).join("\n"),
+  );
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
 
@@ -90,7 +110,8 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
       newErrors.title = "Title must be between 3 and 100 characters.";
     }
     if (description.trim().length < 20 || description.trim().length > 1000) {
-      newErrors.description = "Description must be between 20 and 1000 characters.";
+      newErrors.description =
+        "Description must be between 20 and 1000 characters.";
     }
     if (!eventType) {
       newErrors.eventType = "Please choose an event type.";
@@ -106,8 +127,12 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
     } else if (eventDate < tomorrow) {
       newErrors.eventDate = "The event date must be in the future.";
     }
-    if (guidelines.length > 6 || guidelines.some((line) => line.length < 3 || line.length > 150)) {
-      newErrors.guidelines = "Add up to 6 guidelines, each 3 to 150 characters.";
+    if (
+      guidelines.length > 6 ||
+      guidelines.some((line) => line.length < 3 || line.length > 150)
+    ) {
+      newErrors.guidelines =
+        "Add up to 6 guidelines, each 3 to 150 characters.";
     }
 
     setErrors(newErrors);
@@ -180,7 +205,9 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
               aria-invalid={Boolean(errors.title)}
               className={inputClass}
             />
-            {errors.title && <p className="px-2 text-sm text-red-500">{errors.title}</p>}
+            {errors.title && (
+              <p className="px-2 text-sm text-red-500">{errors.title}</p>
+            )}
           </div>
 
           {/* Type and date */}
@@ -204,7 +231,9 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
                 </select>
                 <ChevronDown className="pointer-events-none absolute right-5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
               </div>
-              {errors.eventType && <p className="px-2 text-sm text-red-500">{errors.eventType}</p>}
+              {errors.eventType && (
+                <p className="px-2 text-sm text-red-500">{errors.eventType}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -218,7 +247,9 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
                 aria-invalid={Boolean(errors.eventDate)}
                 className={inputClass}
               />
-              {errors.eventDate && <p className="px-2 text-sm text-red-500">{errors.eventDate}</p>}
+              {errors.eventDate && (
+                <p className="px-2 text-sm text-red-500">{errors.eventDate}</p>
+              )}
             </div>
           </div>
 
@@ -232,14 +263,17 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
               aria-invalid={Boolean(errors.location)}
               className={inputClass}
             />
-            {errors.location && <p className="px-2 text-sm text-red-500">{errors.location}</p>}
+            {errors.location && (
+              <p className="px-2 text-sm text-red-500">{errors.location}</p>
+            )}
           </div>
 
           <div className="space-y-2">
             <div>
               <Label>Map location (optional)</Label>
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                Select the event location on the map to confirm its pin. The address is not geocoded automatically.
+                Select the event location on the map to confirm its pin. The
+                address is not geocoded automatically.
               </p>
             </div>
             <LocationPicker
@@ -252,7 +286,8 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
             {coordinates ? (
               <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500 dark:text-slate-400">
                 <span>
-                  Confirmed pin: {coordinates.latitude.toFixed(5)}, {coordinates.longitude.toFixed(5)}
+                  Confirmed pin: {coordinates.latitude.toFixed(5)},{" "}
+                  {coordinates.longitude.toFixed(5)}
                 </span>
                 <button
                   type="button"
@@ -267,10 +302,13 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
               </div>
             ) : (
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                No map pin selected. The event remains available in Calendar and List views.
+                No map pin selected. The event remains available in Calendar and
+                List views.
               </p>
             )}
-            {errors.coordinates && <p className="px-2 text-sm text-red-500">{errors.coordinates}</p>}
+            {errors.coordinates && (
+              <p className="px-2 text-sm text-red-500">{errors.coordinates}</p>
+            )}
           </div>
 
           {/* Thumbnail */}
@@ -283,7 +321,9 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
               aria-invalid={Boolean(errors.thumbnail)}
               className={inputClass}
             />
-            {errors.thumbnail && <p className="px-2 text-sm text-red-500">{errors.thumbnail}</p>}
+            {errors.thumbnail && (
+              <p className="px-2 text-sm text-red-500">{errors.thumbnail}</p>
+            )}
           </div>
 
           {/* Description */}
@@ -302,12 +342,16 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
               aria-invalid={Boolean(errors.description)}
               className="rounded-2xl border-0 bg-slate-200/60 px-5 py-3 dark:bg-zinc-800/80"
             />
-            {errors.description && <p className="px-2 text-sm text-red-500">{errors.description}</p>}
+            {errors.description && (
+              <p className="px-2 text-sm text-red-500">{errors.description}</p>
+            )}
           </div>
 
           {/* Guidelines */}
           <div className="space-y-2">
-            <Label htmlFor="edit-guidelines">Volunteer guidelines (one per line, optional)</Label>
+            <Label htmlFor="edit-guidelines">
+              Volunteer guidelines (one per line, optional)
+            </Label>
             <Textarea
               id="edit-guidelines"
               value={guidelinesText}
@@ -316,7 +360,9 @@ export default function EditEventDialog({ event, onClose, onSaved }: Props) {
               aria-invalid={Boolean(errors.guidelines)}
               className="rounded-2xl border-0 bg-slate-200/60 px-5 py-3 dark:bg-zinc-800/80"
             />
-            {errors.guidelines && <p className="px-2 text-sm text-red-500">{errors.guidelines}</p>}
+            {errors.guidelines && (
+              <p className="px-2 text-sm text-red-500">{errors.guidelines}</p>
+            )}
           </div>
 
           <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">

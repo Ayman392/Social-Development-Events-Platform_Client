@@ -4,13 +4,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { ArrowLeft, CalendarDays, CheckCircle2, Heart, MapPin, SearchX, Users } from "lucide-react";
+import {
+  ArrowLeft,
+  CalendarDays,
+  CheckCircle2,
+  Heart,
+  MapPin,
+  SearchX,
+  Users,
+} from "lucide-react";
 import { Button } from "@heroui/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "@/lib/auth-client";
-import { apiFetch } from "@/lib/api"; 
+import { apiFetch } from "@/lib/api";
 import type { EventItem } from "@/lib/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -68,7 +76,9 @@ export default function EventDetailsPage() {
   const { data: session, isPending } = useSession();
 
   const [event, setEvent] = useState<EventItem | null>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "notfound">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "notfound">(
+    "loading",
+  );
   const [imageFailed, setImageFailed] = useState(false);
   const [joined, setJoined] = useState(false);
   const [joining, setJoining] = useState(false);
@@ -103,9 +113,7 @@ export default function EventDetailsPage() {
       if (!userEmail) return;
 
       try {
-        const res = await apiFetch(
-          `/events/${eventId}/is-joined`
-        );
+        const res = await apiFetch(`/events/${eventId}/is-joined`);
         const data = await res.json();
         setJoined(Boolean(data.joined));
       } catch {
@@ -147,7 +155,9 @@ export default function EventDetailsPage() {
       toast.success("You have joined this event. Thank you!");
       setJoined(true);
       setEvent((current) =>
-        current ? { ...current, volunteersCount: current.volunteersCount + 1 } : current
+        current
+          ? { ...current, volunteersCount: current.volunteersCount + 1 }
+          : current,
       );
     } catch {
       toast.error("Something went wrong. Please try again.");
@@ -223,7 +233,9 @@ export default function EventDetailsPage() {
       <div className="mt-8 grid gap-8 lg:grid-cols-3">
         {/* Left: the details */}
         <div className="lg:col-span-2">
-          <h1 className="mb-5 text-3xl font-bold tracking-tight md:text-4xl">{event.title}</h1>
+          <h1 className="mb-5 text-3xl font-bold tracking-tight md:text-4xl">
+            {event.title}
+          </h1>
 
           <div className="mb-8 flex flex-wrap gap-x-6 gap-y-3 text-slate-600 dark:text-slate-300">
             <div className="flex items-center">
@@ -243,10 +255,15 @@ export default function EventDetailsPage() {
 
           {event.guidelines && event.guidelines.length > 0 && (
             <>
-              <h2 className="mb-4 text-xl font-semibold">Volunteer Guidelines</h2>
+              <h2 className="mb-4 text-xl font-semibold">
+                Volunteer Guidelines
+              </h2>
               <ul className="space-y-3">
                 {event.guidelines.map((line) => (
-                  <li key={line} className="flex items-start text-slate-600 dark:text-slate-400">
+                  <li
+                    key={line}
+                    className="flex items-start text-slate-600 dark:text-slate-400"
+                  >
                     <CheckCircle2 className="mr-3 mt-0.5 h-5 w-5 shrink-0 text-emerald-500" />
                     {line}
                   </li>
@@ -264,9 +281,13 @@ export default function EventDetailsPage() {
                 <Users className="h-6 w-6 text-blue-500" />
               </div>
               <div>
-                <p className="text-2xl font-bold leading-none">{event.volunteersCount}</p>
+                <p className="text-2xl font-bold leading-none">
+                  {event.volunteersCount}
+                </p>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  {event.volunteersCount === 1 ? "Volunteer joined" : "Volunteers joined"}
+                  {event.volunteersCount === 1
+                    ? "Volunteer joined"
+                    : "Volunteers joined"}
                 </p>
               </div>
             </div>
@@ -309,7 +330,10 @@ export default function EventDetailsPage() {
               </p>
               <div className="flex items-center">
                 <Avatar className="mr-3 h-11 w-11">
-                  <AvatarImage src={event.creatorPhoto || undefined} alt={organizerName} />
+                  <AvatarImage
+                    src={event.creatorPhoto || undefined}
+                    alt={organizerName}
+                  />
                   <AvatarFallback className="bg-blue-600 font-semibold text-white">
                     {organizerName.charAt(0).toUpperCase()}
                   </AvatarFallback>

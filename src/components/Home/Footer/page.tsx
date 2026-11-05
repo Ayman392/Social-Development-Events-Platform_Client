@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
-import { CalendarDays, CalendarPlus, ClipboardList, Image, Mail, MapPin, Ticket } from "lucide-react";
+import {
+  CalendarDays,
+  CalendarPlus,
+  ClipboardList,
+  Image,
+  Mail,
+  MapPin,
+  Ticket,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import Logo from "@/components/ui/logo";
@@ -29,8 +37,10 @@ const socials = [
   { label: "Instagram", href: "https://www.instagram.com", icon: FaInstagram },
 ];
 
-const headingClass = "mb-5 text-xs font-bold uppercase tracking-widest text-white";
-const linkClass = "flex items-center text-sm text-slate-400 transition-colors hover:text-white";
+const headingClass =
+  "mb-5 text-xs font-bold uppercase tracking-widest text-white";
+const linkClass =
+  "flex items-center text-sm text-slate-400 transition-colors hover:text-white";
 
 export default function Footer() {
   return (
@@ -43,12 +53,12 @@ export default function Footer() {
           {/* Logo, description and social icons */}
           <div>
             <div className="mb-3">
-              <Logo/>
+              <Logo />
             </div>
 
             <p className="mb-6 text-sm leading-relaxed text-slate-400">
-              Connecting passionate volunteers with community service events to drive meaningful
-              social development across Bangladesh.
+              Connecting passionate volunteers with community service events to
+              drive meaningful social development across Bangladesh.
             </p>
 
             <div className="flex gap-3">
@@ -109,7 +119,10 @@ export default function Footer() {
               </li>
               <li className="flex items-start">
                 <Mail className="mr-3 mt-0.5 h-4 w-4 shrink-0 text-sky-400" />
-                <a href="mailto:hello@hopenetwork.example" className="transition-colors hover:text-white">
+                <a
+                  href="mailto:hello@hopenetwork.example"
+                  className="transition-colors hover:text-white"
+                >
                   hello@oikyo.com
                 </a>
               </li>
@@ -120,9 +133,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-8 text-sm text-slate-500 sm:flex-row">
           <p>© 2026 Oikyo. All rights reserved.</p>
-          <p className="flex items-center gap-1.5">
-            Made by Ayman
-          </p>
+          <p className="flex items-center gap-1.5">Made by Ayman</p>
         </div>
       </div>
     </footer>

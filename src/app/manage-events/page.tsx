@@ -5,7 +5,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
-import { CalendarDays, ClipboardList, Heart, MapPin, Pencil, Trash2, Users } from "lucide-react";
+import {
+  CalendarDays,
+  ClipboardList,
+  Heart,
+  MapPin,
+  Pencil,
+  Trash2,
+  Users,
+} from "lucide-react";
 import { Button } from "@heroui/react";
 
 import EditEventDialog from "@/components/Home/EditEventDialog/page";
@@ -13,7 +21,6 @@ import PrivateRoute from "@/components/Home/PrivateRoute/page";
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "@/lib/auth-client";
 import type { EventItem } from "@/lib/types";
-
 
 // Same badge colours as the event cards
 const typeColors: Record<string, string> = {
@@ -66,11 +73,10 @@ type RowProps = {
 
 function EventRow({ event, onEdit, onDelete }: RowProps) {
   const router = useRouter();
-  
+
   // If the thumbnail link changes (after an update), try loading the image again
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const imageFailed = failedUrl === event.thumbnail;
-
 
   const past = isPastEvent(event.eventDate);
   const badgeColor = typeColors[event.eventType] || typeColors.Other;
@@ -92,7 +98,9 @@ function EventRow({ event, onEdit, onDelete }: RowProps) {
             className="h-full w-full object-cover"
           />
         )}
-        <Badge className={`absolute left-4 top-4 border-0 text-xs font-semibold text-white shadow-md ${badgeColor}`}>
+        <Badge
+          className={`absolute left-4 top-4 border-0 text-xs font-semibold text-white shadow-md ${badgeColor}`}
+        >
           {event.eventType}
         </Badge>
       </div>
@@ -101,7 +109,9 @@ function EventRow({ event, onEdit, onDelete }: RowProps) {
       <div className="flex flex-1 flex-col justify-between gap-5 p-6">
         <div>
           <div className="mb-3 flex flex-wrap items-center gap-3">
-            <h2 className="line-clamp-1 text-xl font-semibold">{event.title}</h2>
+            <h2 className="line-clamp-1 text-xl font-semibold">
+              {event.title}
+            </h2>
             <span
               className={`rounded-full px-3 py-1 text-xs font-semibold ${
                 past
@@ -125,7 +135,9 @@ function EventRow({ event, onEdit, onDelete }: RowProps) {
             <div className="flex items-center">
               <Users className="mr-2 h-4 w-4 shrink-0 text-blue-500" />
               <span>
-                {event.volunteersCount} {event.volunteersCount === 1 ? "volunteer" : "volunteers"} joined
+                {event.volunteersCount}{" "}
+                {event.volunteersCount === 1 ? "volunteer" : "volunteers"}{" "}
+                joined
               </span>
             </div>
           </div>
@@ -165,7 +177,9 @@ function ManageList() {
   const userEmail = session?.user.email;
 
   const [events, setEvents] = useState<EventItem[]>([]);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
   const [editing, setEditing] = useState<EventItem | null>(null);
 
   useEffect(() => {
@@ -206,10 +220,7 @@ function ManageList() {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await apiFetch(
-        `/events/${event._id}`,
-        { method: "DELETE" }
-      );
+      const res = await apiFetch(`/events/${event._id}`, { method: "DELETE" });
       const data = await res.json();
 
       if (!res.ok) {
@@ -229,7 +240,7 @@ function ManageList() {
     setEvents((current) =>
       current
         .map((item) => (item._id === updated._id ? updated : item))
-        .sort((a, b) => a.eventDate.localeCompare(b.eventDate))
+        .sort((a, b) => a.eventDate.localeCompare(b.eventDate)),
     );
     setEditing(null);
   }
@@ -241,7 +252,9 @@ function ManageList() {
         <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-500/30">
           <ClipboardList className="h-7 w-7 text-white" />
         </div>
-        <h1 className="mb-2 text-3xl font-bold tracking-tight">Manage Events</h1>
+        <h1 className="mb-2 text-3xl font-bold tracking-tight">
+          Manage Events
+        </h1>
         <p className="text-slate-500 dark:text-slate-400">
           Update or delete the events you have created.
         </p>
@@ -259,7 +272,8 @@ function ManageList() {
       {/* Could not reach the server */}
       {status === "error" && (
         <p className="glass-panel rounded-2xl p-8 text-center text-slate-600 dark:text-slate-400">
-          We could not load your events right now. Please refresh the page in a moment.
+          We could not load your events right now. Please refresh the page in a
+          moment.
         </p>
       )}
 
@@ -267,7 +281,9 @@ function ManageList() {
       {status === "ready" && events.length === 0 && (
         <div className="glass-panel rounded-3xl p-10 text-center">
           <ClipboardList className="mx-auto mb-4 h-10 w-10 text-slate-400" />
-          <h2 className="mb-2 text-xl font-semibold">You have not created any events yet</h2>
+          <h2 className="mb-2 text-xl font-semibold">
+            You have not created any events yet
+          </h2>
           <p className="mb-6 text-slate-500 dark:text-slate-400">
             Organize your first community service event and invite volunteers.
           </p>
@@ -284,7 +300,8 @@ function ManageList() {
       {status === "ready" && events.length > 0 && (
         <>
           <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">
-            You have created {events.length} {events.length === 1 ? "event" : "events"}
+            You have created {events.length}{" "}
+            {events.length === 1 ? "event" : "events"}
           </p>
           <div className="space-y-6">
             {events.map((event) => (

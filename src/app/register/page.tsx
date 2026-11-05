@@ -4,7 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { CheckCircle2, Circle, Eye, EyeOff, ImageIcon, Lock, Mail, User } from "lucide-react";
+import {
+  CheckCircle2,
+  Circle,
+  Eye,
+  EyeOff,
+  ImageIcon,
+  Lock,
+  Mail,
+  User,
+} from "lucide-react";
 import { Button } from "@heroui/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,8 +30,10 @@ type FormErrors = {
 };
 
 // The input style shared by every field on this page
-const inputClass = "h-12 rounded-2xl border-0 bg-slate-200/60 pl-11 dark:bg-zinc-800/80";
-const iconClass = "pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400";
+const inputClass =
+  "h-12 rounded-2xl border-0 bg-slate-200/60 pl-11 dark:bg-zinc-800/80";
+const iconClass =
+  "pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -48,11 +59,14 @@ export default function RegisterPage() {
     // Check every field and collect the messages
     const newErrors: FormErrors = {};
     if (name.trim().length < 2) newErrors.name = "Please enter your full name.";
-    if (!validateEmail(email.trim())) newErrors.email = "Please enter a valid email address.";
-    if (!validateUrl(photoURL.trim())) newErrors.photoURL = "Please enter a valid photo URL.";
+    if (!validateEmail(email.trim()))
+      newErrors.email = "Please enter a valid email address.";
+    if (!validateUrl(photoURL.trim()))
+      newErrors.photoURL = "Please enter a valid photo URL.";
 
     const passwordErrors = validatePassword(password);
-    if (passwordErrors.length > 0) newErrors.password = "Your password does not meet the rules below.";
+    if (passwordErrors.length > 0)
+      newErrors.password = "Your password does not meet the rules below.";
 
     setErrors(newErrors);
 
@@ -86,7 +100,9 @@ export default function RegisterPage() {
       <div className="glass-panel w-full rounded-[2rem] p-8 shadow-xl">
         {/* Heading */}
         <div className="mb-8 text-center">
-          <h1 className="mb-2 text-3xl font-bold tracking-tight">Create your account</h1>
+          <h1 className="mb-2 text-3xl font-bold tracking-tight">
+            Create your account
+          </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Join HopeNetwork and start making a difference.
           </p>
@@ -95,12 +111,21 @@ export default function RegisterPage() {
         {/* Live preview of the profile photo */}
         <div className="mb-8 flex flex-col items-center">
           <Avatar className="h-20 w-20 border-4 border-white shadow-lg dark:border-zinc-800">
-            <AvatarImage src={validateUrl(photoURL.trim()) ? photoURL.trim() : undefined} alt="Profile preview" />
+            <AvatarImage
+              src={validateUrl(photoURL.trim()) ? photoURL.trim() : undefined}
+              alt="Profile preview"
+            />
             <AvatarFallback className="bg-blue-600 text-2xl font-semibold text-white">
-              {name.trim() ? name.trim().charAt(0).toUpperCase() : <User className="h-8 w-8" />}
+              {name.trim() ? (
+                name.trim().charAt(0).toUpperCase()
+              ) : (
+                <User className="h-8 w-8" />
+              )}
             </AvatarFallback>
           </Avatar>
-          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Profile photo preview</p>
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            Profile photo preview
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
@@ -118,7 +143,9 @@ export default function RegisterPage() {
                 className={inputClass}
               />
             </div>
-            {errors.name && <p className="px-2 text-sm text-red-500">{errors.name}</p>}
+            {errors.name && (
+              <p className="px-2 text-sm text-red-500">{errors.name}</p>
+            )}
           </div>
 
           {/* Email */}
@@ -136,7 +163,9 @@ export default function RegisterPage() {
                 className={inputClass}
               />
             </div>
-            {errors.email && <p className="px-2 text-sm text-red-500">{errors.email}</p>}
+            {errors.email && (
+              <p className="px-2 text-sm text-red-500">{errors.email}</p>
+            )}
           </div>
 
           {/* Photo URL */}
@@ -153,7 +182,9 @@ export default function RegisterPage() {
                 className={inputClass}
               />
             </div>
-            {errors.photoURL && <p className="px-2 text-sm text-red-500">{errors.photoURL}</p>}
+            {errors.photoURL && (
+              <p className="px-2 text-sm text-red-500">{errors.photoURL}</p>
+            )}
           </div>
 
           {/* Password */}
@@ -176,10 +207,16 @@ export default function RegisterPage() {
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-700 dark:hover:text-white"
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </button>
             </div>
-            {errors.password && <p className="px-2 text-sm text-red-500">{errors.password}</p>}
+            {errors.password && (
+              <p className="px-2 text-sm text-red-500">{errors.password}</p>
+            )}
 
             {/* Rules turn green as the user types */}
             <ul className="grid gap-1.5 px-2 pt-1 sm:grid-cols-3">
@@ -187,7 +224,9 @@ export default function RegisterPage() {
                 <li
                   key={rule.label}
                   className={`flex items-center text-xs transition-colors ${
-                    rule.passed ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500 dark:text-slate-400"
+                    rule.passed
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-slate-500 dark:text-slate-400"
                   }`}
                 >
                   {rule.passed ? (
@@ -212,7 +251,10 @@ export default function RegisterPage() {
 
         <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-blue-600 hover:underline dark:text-blue-400">
+          <Link
+            href="/login"
+            className="font-semibold text-blue-600 hover:underline dark:text-blue-400"
+          >
             Login
           </Link>
         </p>

@@ -19,13 +19,16 @@ import { hasValidEventCoordinates, type EventItem } from "@/lib/types";
 
 // Leaflet needs the browser, so the map is loaded on the client only
 const EventLocationMap = dynamic(
-  () => import("@/components/Home/EventExplorer/map").then((module) => module.EventLocationMap),
+  () =>
+    import("@/components/Home/EventExplorer/map").then(
+      (module) => module.EventLocationMap,
+    ),
   {
     ssr: false,
     loading: () => (
       <div className="h-72 animate-pulse rounded-2xl bg-slate-200 dark:bg-zinc-800 sm:h-80" />
     ),
-  }
+  },
 );
 
 // Each event type gets its own badge color
@@ -79,7 +82,9 @@ export default function EventCard({ event }: { event: EventItem }) {
         </div>
 
         {/* Event type, top right */}
-        <Badge className={`absolute right-4 top-4 border-0 px-3 py-1 text-xs font-semibold text-white shadow-md ${badgeColor}`}>
+        <Badge
+          className={`absolute right-4 top-4 border-0 px-3 py-1 text-xs font-semibold text-white shadow-md ${badgeColor}`}
+        >
           {event.eventType}
         </Badge>
       </div>
@@ -102,7 +107,8 @@ export default function EventCard({ event }: { event: EventItem }) {
           <div className="flex items-center">
             <Users className="mr-2 h-4 w-4 shrink-0 text-blue-500" />
             <span>
-              {event.volunteersCount} {event.volunteersCount === 1 ? "volunteer" : "volunteers"} joined
+              {event.volunteersCount}{" "}
+              {event.volunteersCount === 1 ? "volunteer" : "volunteers"} joined
               <span className="text-slate-400"> · {year}</span>
             </span>
           </div>
@@ -135,7 +141,9 @@ export default function EventCard({ event }: { event: EventItem }) {
           <Dialog open={mapOpen} onOpenChange={setMapOpen}>
             <DialogContent className="rounded-[2rem] sm:max-w-2xl">
               <DialogHeader>
-                <DialogTitle className="text-xl font-bold">{event.title}</DialogTitle>
+                <DialogTitle className="text-xl font-bold">
+                  {event.title}
+                </DialogTitle>
                 <DialogDescription>{event.location}</DialogDescription>
               </DialogHeader>
               <EventLocationMap event={event} />

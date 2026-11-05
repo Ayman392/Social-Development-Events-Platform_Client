@@ -26,10 +26,12 @@ export default function Features() {
     <section id="features" className="scroll-mt-24 pt-8">
       {/* Section heading */}
       <div className="mb-12 text-center">
-        <h2 className="mb-4 text-3xl font-bold tracking-tight">Why Choose Oikyo?</h2>
+        <h2 className="mb-4 text-3xl font-bold tracking-tight">
+          Why Choose Oikyo?
+        </h2>
         <p className="mx-auto max-w-2xl text-slate-500 dark:text-slate-400">
-          A transparent, efficient, and engaging platform for people who want to dedicate their
-          time to social development.
+          A transparent, efficient, and engaging platform for people who want to
+          dedicate their time to social development.
         </p>
       </div>
 

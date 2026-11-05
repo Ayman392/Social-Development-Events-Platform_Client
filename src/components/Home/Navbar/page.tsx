@@ -74,7 +74,7 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-            <Logo/>
+          <Logo />
           {/* Center links */}
           <div className="hidden space-x-8 md:flex">
             {navLinks.map((link) => (
@@ -127,7 +127,10 @@ export default function Navbar() {
                       aria-label="Open account menu"
                     >
                       <Avatar className="h-9 w-9 border border-slate-200 shadow-sm dark:border-zinc-700">
-                        <AvatarImage src={session.user.image ?? undefined} alt={session.user.name} />
+                        <AvatarImage
+                          src={session.user.image ?? undefined}
+                          alt={session.user.name}
+                        />
                         <AvatarFallback className="bg-blue-600 text-sm font-semibold text-white">
                           {session.user.name.charAt(0).toUpperCase()}
                         </AvatarFallback>
@@ -141,10 +144,15 @@ export default function Navbar() {
                     </div>
                   </div>
 
-                  <DropdownMenuContent align="end" className="glass-panel w-56 rounded-2xl p-0 shadow-lg">
+                  <DropdownMenuContent
+                    align="end"
+                    className="glass-panel w-56 rounded-2xl p-0 shadow-lg"
+                  >
                     {/* Name and email */}
                     <div className="border-b border-slate-200/50 px-4 py-3 dark:border-zinc-700/50">
-                      <p className="truncate text-sm font-medium">{session.user.name}</p>
+                      <p className="truncate text-sm font-medium">
+                        {session.user.name}
+                      </p>
                       <p className="truncate text-xs text-slate-500 dark:text-slate-400">
                         {session.user.email}
                       </p>
@@ -165,7 +173,11 @@ export default function Navbar() {
                 </DropdownMenu>
 
                 {/* Log out button in the bar */}
-                <Button variant="outline" onClick={handleLogout} className="rounded-full">
+                <Button
+                  variant="outline"
+                  onClick={handleLogout}
+                  className="rounded-full"
+                >
                   Log out
                 </Button>
               </>
@@ -179,7 +191,11 @@ export default function Navbar() {
               className="rounded-full md:hidden"
               aria-label="Open menu"
             >
-              {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isMobileOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>

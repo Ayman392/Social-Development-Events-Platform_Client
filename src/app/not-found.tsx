@@ -21,10 +21,12 @@ export default function NotFound() {
             404
           </p>
 
-          <h1 className="mb-3 text-3xl font-bold tracking-tight">This page could not be found</h1>
+          <h1 className="mb-3 text-3xl font-bold tracking-tight">
+            This page could not be found
+          </h1>
           <p className="mb-8 max-w-md text-slate-500 dark:text-slate-400">
-            The link may be broken, or the page may have moved. Head back home, or find an event
-            that needs your help.
+            The link may be broken, or the page may have moved. Head back home,
+            or find an event that needs your help.
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row">

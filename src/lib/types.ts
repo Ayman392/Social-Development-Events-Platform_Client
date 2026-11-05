@@ -20,16 +20,16 @@ export type EventCoordinates = {
 };
 
 export function hasValidEventCoordinates(
-  coordinates: EventCoordinates | undefined
+  coordinates: EventCoordinates | undefined,
 ): coordinates is EventCoordinates {
   return Boolean(
     coordinates &&
-      Number.isFinite(coordinates.latitude) &&
-      Number.isFinite(coordinates.longitude) &&
-      coordinates.latitude >= -90 &&
-      coordinates.latitude <= 90 &&
-      coordinates.longitude >= -180 &&
-      coordinates.longitude <= 180
+    Number.isFinite(coordinates.latitude) &&
+    Number.isFinite(coordinates.longitude) &&
+    coordinates.latitude >= -90 &&
+    coordinates.latitude <= 90 &&
+    coordinates.longitude >= -180 &&
+    coordinates.longitude <= 180,
   );
 }
 

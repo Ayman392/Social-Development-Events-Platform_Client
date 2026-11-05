@@ -6,7 +6,11 @@ import toast from "react-hot-toast";
 
 import { useSession } from "@/lib/auth-client";
 
-export default function PrivateRoute({ children }: { children: React.ReactNode }) {
+export default function PrivateRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const { data: session, isPending } = useSession();
 

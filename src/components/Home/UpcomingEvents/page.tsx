@@ -29,7 +29,9 @@ function CardSkeleton() {
 export default function UpcomingEvents() {
   const router = useRouter();
   const [events, setEvents] = useState<EventItem[]>([]);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
 
   useEffect(() => {
     async function loadEvents() {
@@ -53,7 +55,9 @@ export default function UpcomingEvents() {
       {/* Section heading */}
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="mb-2 text-3xl font-bold tracking-tight">Upcoming Events</h2>
+          <h2 className="mb-2 text-3xl font-bold tracking-tight">
+            Upcoming Events
+          </h2>
           <p className="text-slate-500 dark:text-slate-400">
             Join ongoing initiatives across the country.
           </p>
@@ -80,7 +84,8 @@ export default function UpcomingEvents() {
       {/* Could not reach the server */}
       {status === "error" && (
         <p className="glass-panel rounded-2xl p-8 text-center text-slate-600 dark:text-slate-400">
-          We could not load events right now. Please refresh the page in a moment.
+          We could not load events right now. Please refresh the page in a
+          moment.
         </p>
       )}
 

@@ -78,7 +78,9 @@ function JoinedCard({ item }: { item: JoinedEventItem }) {
             className="h-full w-full object-cover"
           />
         )}
-        <Badge className={`absolute left-4 top-4 border-0 text-xs font-semibold text-white shadow-md ${badgeColor}`}>
+        <Badge
+          className={`absolute left-4 top-4 border-0 text-xs font-semibold text-white shadow-md ${badgeColor}`}
+        >
           {item.eventType}
         </Badge>
       </div>
@@ -132,7 +134,9 @@ function JoinedList() {
   const userEmail = session?.user.email;
 
   const [items, setItems] = useState<JoinedEventItem[]>([]);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
 
   useEffect(() => {
     async function loadJoined() {
@@ -161,7 +165,9 @@ function JoinedList() {
         <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-500/30">
           <Ticket className="h-7 w-7 text-white" />
         </div>
-        <h1 className="mb-2 text-3xl font-bold tracking-tight">Joined Events</h1>
+        <h1 className="mb-2 text-3xl font-bold tracking-tight">
+          Joined Events
+        </h1>
         <p className="text-slate-500 dark:text-slate-400">
           The events you have signed up for, with the soonest first.
         </p>
@@ -179,7 +185,8 @@ function JoinedList() {
       {/* Could not reach the server */}
       {status === "error" && (
         <p className="glass-panel rounded-2xl p-8 text-center text-slate-600 dark:text-slate-400">
-          We could not load your joined events right now. Please refresh the page in a moment.
+          We could not load your joined events right now. Please refresh the
+          page in a moment.
         </p>
       )}
 
@@ -187,7 +194,9 @@ function JoinedList() {
       {status === "ready" && items.length === 0 && (
         <div className="glass-panel rounded-3xl p-10 text-center">
           <Ticket className="mx-auto mb-4 h-10 w-10 text-slate-400" />
-          <h2 className="mb-2 text-xl font-semibold">You have not joined any events yet</h2>
+          <h2 className="mb-2 text-xl font-semibold">
+            You have not joined any events yet
+          </h2>
           <p className="mb-6 text-slate-500 dark:text-slate-400">
             Browse upcoming events and join one that matters to you.
           </p>
@@ -204,7 +213,8 @@ function JoinedList() {
       {status === "ready" && items.length > 0 && (
         <>
           <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">
-            You have joined {items.length} {items.length === 1 ? "event" : "events"}
+            You have joined {items.length}{" "}
+            {items.length === 1 ? "event" : "events"}
           </p>
           <div className="space-y-6">
             {items.map((item) => (

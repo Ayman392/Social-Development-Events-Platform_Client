@@ -2,7 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { CalendarDays, List, Map as MapIcon, MapPin, Search, X } from "lucide-react";
+import {
+  CalendarDays,
+  List,
+  Map as MapIcon,
+  MapPin,
+  Search,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 
 import { Calendar } from "@/components/ui/calendar";
@@ -10,8 +17,11 @@ import { Input } from "@/components/ui/input";
 import { hasValidEventCoordinates, type EventItem } from "@/lib/types";
 
 const EventMap = dynamic(
-  () => import("@/components/Home/EventExplorer/map").then((module) => module.EventMap),
-  { ssr: false, loading: () => <MapLoading /> }
+  () =>
+    import("@/components/Home/EventExplorer/map").then(
+      (module) => module.EventMap,
+    ),
+  { ssr: false, loading: () => <MapLoading /> },
 );
 
 const eventTypes = [
@@ -108,7 +118,8 @@ export default function EventExplorer() {
         if (!apiUrl) throw new Error("NEXT_PUBLIC_API_URL is not configured.");
 
         const response = await fetch(`${apiUrl}/events/upcoming`);
-        if (!response.ok) throw new Error(`Could not load events (${response.status}).`);
+        if (!response.ok)
+          throw new Error(`Could not load events (${response.status}).`);
 
         const data: EventItem[] = await response.json();
         if (active) {
@@ -131,7 +142,8 @@ export default function EventExplorer() {
     const dateKey = selectedDate ? toDateKey(selectedDate) : null;
 
     return events.filter((event) => {
-      const matchesType = activeType === "All" || event.eventType === activeType;
+      const matchesType =
+        activeType === "All" || event.eventType === activeType;
       const matchesSearch =
         !query ||
         event.title.toLocaleLowerCase().includes(query) ||
@@ -144,10 +156,14 @@ export default function EventExplorer() {
 
   const eventDates = useMemo(
     () =>
-      [...new Set(filteredEvents.map((event) => event.eventDate.slice(0, 10)))].map(dateForKey),
-    [filteredEvents]
+      [
+        ...new Set(filteredEvents.map((event) => event.eventDate.slice(0, 10))),
+      ].map(dateForKey),
+    [filteredEvents],
   );
-  const mappableEvents = filteredEvents.filter((event) => hasValidEventCoordinates(event.coordinates));
+  const mappableEvents = filteredEvents.filter((event) =>
+    hasValidEventCoordinates(event.coordinates),
+  );
 
   return (
     <section id="event-explorer" className="scroll-mt-24 pt-8">
@@ -156,17 +172,21 @@ export default function EventExplorer() {
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
             Oikyo Event Explorer
           </p>
-          <h2 className="text-3xl font-bold tracking-tight">Find a way to make a difference</h2>
+          <h2 className="text-3xl font-bold tracking-tight">
+            Find a way to make a difference
+          </h2>
           <p className="mt-2 text-slate-500 dark:text-slate-400">
             Explore community events by place, date, and cause.
           </p>
         </div>
         <div className="flex rounded-full bg-slate-200/70 p-1 dark:bg-zinc-800">
-          {([
-            ["map", "Map", MapIcon],
-            ["calendar", "Calendar", CalendarDays],
-            ["list", "List", List],
-          ] as const).map(([mode, label, Icon]) => (
+          {(
+            [
+              ["map", "Map", MapIcon],
+              ["calendar", "Calendar", CalendarDays],
+              ["list", "List", List],
+            ] as const
+          ).map(([mode, label, Icon]) => (
             <button
               key={mode}
               type="button"
@@ -232,15 +252,22 @@ export default function EventExplorer() {
         </div>
       )}
       {status === "error" && (
-        <div role="alert" className="glass-panel rounded-3xl p-10 text-center text-slate-600 dark:text-slate-300">
+        <div
+          role="alert"
+          className="glass-panel rounded-3xl p-10 text-center text-slate-600 dark:text-slate-300"
+        >
           We could not load events right now. Please try again in a moment.
         </div>
       )}
       {status === "ready" && (
         <>
-          <p className="mb-4 text-sm text-slate-500 dark:text-slate-400" aria-live="polite">
+          <p
+            className="mb-4 text-sm text-slate-500 dark:text-slate-400"
+            aria-live="polite"
+          >
             Showing {filteredEvents.length} events
-            {view === "map" && ` · ${mappableEvents.length} with confirmed map locations`}
+            {view === "map" &&
+              ` · ${mappableEvents.length} with confirmed map locations`}
           </p>
 
           {filteredEvents.length === 0 ? (
@@ -255,14 +282,18 @@ export default function EventExplorer() {
                     <EventMap events={mappableEvents} />
                   ) : (
                     <div className="flex h-80 items-center justify-center rounded-2xl bg-slate-100 px-6 text-center text-slate-600 dark:bg-zinc-800 dark:text-slate-300">
-                      No events in this selection have organizer-confirmed map coordinates yet.
+                      No events in this selection have organizer-confirmed map
+                      coordinates yet.
                     </div>
                   )}
                   {filteredEvents.length > mappableEvents.length && (
                     <p className="px-3 py-2 text-xs text-slate-500 dark:text-slate-400">
                       {filteredEvents.length - mappableEvents.length} event
-                      {filteredEvents.length - mappableEvents.length === 1 ? "" : "s"} without coordinates
-                      remain available in Calendar and List views.
+                      {filteredEvents.length - mappableEvents.length === 1
+                        ? ""
+                        : "s"}{" "}
+                      without coordinates remain available in Calendar and List
+                      views.
                     </p>
                   )}
                 </div>
@@ -284,7 +315,9 @@ export default function EventExplorer() {
                   </div>
                   <div className="space-y-3">
                     <h3 className="font-semibold">
-                      {selectedDate ? `Events on ${formatSelectedDate(selectedDate)}` : "Upcoming events"}
+                      {selectedDate
+                        ? `Events on ${formatSelectedDate(selectedDate)}`
+                        : "Upcoming events"}
                     </h3>
                     {filteredEvents.map((event) => (
                       <ExplorerEventRow key={event._id} event={event} />

@@ -16,11 +16,8 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      overrideUserInfoOnSignIn: true,   // Use the Google name and photo every time someone signs in with Google
+      overrideUserInfoOnSignIn: true, // Use the Google name and photo every time someone signs in with Google
     },
   },
-  plugins: [nextCookies(),
-            jwt(), 
-            nextCookies()
-           ],
+  plugins: [nextCookies(), jwt(), nextCookies()],
 });

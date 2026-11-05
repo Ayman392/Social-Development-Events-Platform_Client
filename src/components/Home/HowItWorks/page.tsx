@@ -22,22 +22,26 @@ const volunteerSteps = [
   {
     icon: UserPlus,
     title: "Create your account",
-    description: "Sign up with your name, email, and a profile photo. It takes less than a minute.",
+    description:
+      "Sign up with your name, email, and a profile photo. It takes less than a minute.",
   },
   {
     icon: Search,
     title: "Find an event",
-    description: "Browse upcoming events and filter them by type, from cleanups to health camps.",
+    description:
+      "Browse upcoming events and filter them by type, from cleanups to health camps.",
   },
   {
     icon: CalendarCheck,
     title: "Join with one click",
-    description: "Open an event, read the details and guidelines, then press Join Event.",
+    description:
+      "Open an event, read the details and guidelines, then press Join Event.",
   },
   {
     icon: Ticket,
     title: "Track your impact",
-    description: "See every event you have joined, sorted by date, on your Joined Events page.",
+    description:
+      "See every event you have joined, sorted by date, on your Joined Events page.",
   },
 ];
 
@@ -50,17 +54,20 @@ const organizerSteps = [
   {
     icon: CalendarPlus,
     title: "Create your event",
-    description: "Add a title, type, photo, location, and a future date. Guidelines are optional.",
+    description:
+      "Add a title, type, photo, location, and a future date. Guidelines are optional.",
   },
   {
     icon: Users,
     title: "Welcome volunteers",
-    description: "Your event appears on the Upcoming Events page and volunteers can join right away.",
+    description:
+      "Your event appears on the Upcoming Events page and volunteers can join right away.",
   },
   {
     icon: ClipboardList,
     title: "Manage it",
-    description: "Update the details or delete your event any time from Manage Events.",
+    description:
+      "Update the details or delete your event any time from Manage Events.",
   },
 ];
 
@@ -116,8 +123,8 @@ export default function HowItWorks() {
       <div className="mb-10 text-center">
         <h2 className="mb-4 text-3xl font-bold tracking-tight">How It Works</h2>
         <p className="mx-auto max-w-2xl text-slate-500 dark:text-slate-400">
-          Whether you want to give your time or bring people together, getting started takes just a
-          few steps.
+          Whether you want to give your time or bring people together, getting
+          started takes just a few steps.
         </p>
       </div>
 

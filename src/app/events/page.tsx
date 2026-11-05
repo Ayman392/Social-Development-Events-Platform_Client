@@ -42,7 +42,9 @@ export default function EventsPage() {
   const router = useRouter();
 
   const [events, setEvents] = useState<EventItem[]>([]);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
   const [activeType, setActiveType] = useState("All");
   const [search, setSearch] = useState("");
 
@@ -91,10 +93,12 @@ export default function EventsPage() {
           <span className="glass-panel mb-5 inline-block rounded-full px-4 py-1.5 text-sm font-medium">
             Find your next cause
           </span>
-          <h1 className="mb-4 text-3xl font-bold tracking-tight md:text-5xl">Upcoming Events</h1>
+          <h1 className="mb-4 text-3xl font-bold tracking-tight md:text-5xl">
+            Upcoming Events
+          </h1>
           <p className="mb-8 text-slate-600 dark:text-slate-400">
-            Browse community service events that are still to come. Events that have already taken
-            place are hidden automatically.
+            Browse community service events that are still to come. Events that
+            have already taken place are hidden automatically.
           </p>
 
           <Button
@@ -158,7 +162,8 @@ export default function EventsPage() {
         {/* Could not reach the server */}
         {status === "error" && (
           <p className="glass-panel rounded-2xl p-8 text-center text-slate-600 dark:text-slate-400">
-            We could not load events right now. Please refresh the page in a moment.
+            We could not load events right now. Please refresh the page in a
+            moment.
           </p>
         )}
 

@@ -15,7 +15,11 @@ import {
 import L from "leaflet";
 import { MapPin } from "lucide-react";
 
-import { hasValidEventCoordinates, type EventCoordinates, type EventItem } from "@/lib/types";
+import {
+  hasValidEventCoordinates,
+  type EventCoordinates,
+  type EventItem,
+} from "@/lib/types";
 
 // Default view when the explorer map opens: Dhaka city
 const defaultCenter: [number, number] = [23.745, 90.395];
@@ -72,10 +76,7 @@ function EventMapMarker({
   const date = formatPopupDate(event.eventDate);
 
   return (
-    <Marker
-      position={position}
-      icon={createEventIcon(eventType || "Other")}
-    >
+    <Marker position={position} icon={createEventIcon(eventType || "Other")}>
       <Popup>
         <div className="w-56 max-w-[calc(100vw-5rem)] space-y-2">
           {event.thumbnail?.trim() ? (
@@ -94,7 +95,9 @@ function EventMapMarker({
           ) : null}
           {date ? <p className="text-sm">{date}</p> : null}
           {location ? (
-            <p className="text-sm text-slate-500 dark:text-slate-400">{location}</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              {location}
+            </p>
           ) : null}
           <Link
             href={`/events/${event._id}`}
@@ -124,14 +127,14 @@ type EventCluster = {
 function clusterEvents(
   events: EventItem[],
   map: L.Map,
-  zoom: number
+  zoom: number,
 ): EventCluster[] {
   const points: ClusterPoint[] = events.flatMap((event) => {
     if (!hasValidEventCoordinates(event.coordinates)) return [];
 
     const position = L.latLng(
       event.coordinates.latitude,
-      event.coordinates.longitude
+      event.coordinates.longitude,
     );
 
     return [{ event, position, screenPoint: map.project(position, zoom) }];
@@ -169,12 +172,11 @@ function clusterEvents(
   });
 
   return [...groups.values()].map((group) => {
-    const center = group.reduce(
-      (sum, point) => sum.add(point.screenPoint),
-      L.point(0, 0)
-    ).divideBy(group.length);
+    const center = group
+      .reduce((sum, point) => sum.add(point.screenPoint), L.point(0, 0))
+      .divideBy(group.length);
     const clusterEvents = group.sort((left, right) =>
-      left.event._id.localeCompare(right.event._id)
+      left.event._id.localeCompare(right.event._id),
     );
 
     return {
@@ -215,7 +217,9 @@ function EventClusterMarker({
 function EventMarkers({ events }: { events: EventItem[] }) {
   const map = useMap();
   const [mapZoom, setMapZoom] = useState(() => map.getZoom());
-  const [expandedClusterId, setExpandedClusterId] = useState<string | null>(null);
+  const [expandedClusterId, setExpandedClusterId] = useState<string | null>(
+    null,
+  );
 
   useMapEvents({
     zoomend() {
@@ -229,12 +233,12 @@ function EventMarkers({ events }: { events: EventItem[] }) {
 
   const clusters = useMemo(
     () => clusterEvents(events, map, mapZoom),
-    [events, map, mapZoom]
+    [events, map, mapZoom],
   );
 
   function zoomOrExpandCluster(cluster: EventCluster) {
     const bounds = L.latLngBounds(
-      cluster.events.map(({ position }) => position)
+      cluster.events.map(({ position }) => position),
     );
     const targetZoom = map.getBoundsZoom(bounds, false, L.point(64, 64));
 
@@ -269,9 +273,11 @@ function EventMarkers({ events }: { events: EventItem[] }) {
             const angle =
               -Math.PI / 2 + (index * 2 * Math.PI) / cluster.events.length;
             const position = map.containerPointToLatLng(
-              map.latLngToContainerPoint(cluster.center).add(
-                L.point(Math.cos(angle) * radius, Math.sin(angle) * radius)
-              )
+              map
+                .latLngToContainerPoint(cluster.center)
+                .add(
+                  L.point(Math.cos(angle) * radius, Math.sin(angle) * radius),
+                ),
             );
 
             return (
@@ -353,7 +359,7 @@ export function LocationPicker({
 }) {
   const center = useMemo<[number, number]>(
     () => (value ? [value.latitude, value.longitude] : bangladeshCenter),
-    [value]
+    [value],
   );
 
   return (
@@ -372,7 +378,7 @@ export function LocationPicker({
     </MapContainer>
   );
 }
-  // Keeps the map sized correctly when it opens inside a Dialog (the open animation
+// Keeps the map sized correctly when it opens inside a Dialog (the open animation
 // makes Leaflet measure the container too early and leaves grey tiles)
 function InvalidateSizeOnOpen() {
   const map = useMap();

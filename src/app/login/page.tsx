@@ -20,8 +20,10 @@ type FormErrors = {
 };
 
 // The input style shared by every field, same as the Register page
-const inputClass = "h-12 rounded-2xl border-0 bg-slate-200/60 pl-11 dark:bg-zinc-800/80";
-const iconClass = "pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400";
+const inputClass =
+  "h-12 rounded-2xl border-0 bg-slate-200/60 pl-11 dark:bg-zinc-800/80";
+const iconClass =
+  "pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,7 +39,8 @@ export default function LoginPage() {
 
     // Check both fields before talking to the server
     const newErrors: FormErrors = {};
-    if (!validateEmail(email.trim())) newErrors.email = "Please enter a valid email address.";
+    if (!validateEmail(email.trim()))
+      newErrors.email = "Please enter a valid email address.";
     if (!password) newErrors.password = "Please enter your password.";
 
     setErrors(newErrors);
@@ -48,7 +51,9 @@ export default function LoginPage() {
     setLoading(false);
 
     if (error) {
-      toast.error(error.message || "Login failed. Please check your email and password.");
+      toast.error(
+        error.message || "Login failed. Please check your email and password.",
+      );
       return;
     }
 
@@ -69,7 +74,9 @@ export default function LoginPage() {
       <div className="glass-panel w-full rounded-[2rem] p-8 shadow-xl">
         {/* Heading */}
         <div className="mb-8 text-center">
-          <h1 className="mb-2 text-3xl font-bold tracking-tight">Welcome back</h1>
+          <h1 className="mb-2 text-3xl font-bold tracking-tight">
+            Welcome back
+          </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Log in to join events and track your impact.
           </p>
@@ -91,7 +98,9 @@ export default function LoginPage() {
                 className={inputClass}
               />
             </div>
-            {errors.email && <p className="px-2 text-sm text-red-500">{errors.email}</p>}
+            {errors.email && (
+              <p className="px-2 text-sm text-red-500">{errors.email}</p>
+            )}
           </div>
 
           {/* Password */}
@@ -114,10 +123,16 @@ export default function LoginPage() {
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-700 dark:hover:text-white"
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </button>
             </div>
-            {errors.password && <p className="px-2 text-sm text-red-500">{errors.password}</p>}
+            {errors.password && (
+              <p className="px-2 text-sm text-red-500">{errors.password}</p>
+            )}
           </div>
 
           <Button

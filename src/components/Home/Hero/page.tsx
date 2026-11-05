@@ -76,7 +76,9 @@ function HeroSlide({ slide, first }: { slide: Slide; first: boolean }) {
           {slide.title}
         </h1>
 
-        <p className="mb-10 max-w-xl text-lg text-slate-200 drop-shadow">{slide.text}</p>
+        <p className="mb-10 max-w-xl text-lg text-slate-200 drop-shadow">
+          {slide.text}
+        </p>
 
         <Button
           onPress={() => router.push(slide.href)}
@@ -95,7 +97,7 @@ export default function Hero() {
 
   // Changes slide every 5 seconds, and pauses while the mouse is over the banner
   const [autoplay] = useState(() =>
-    Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true })
+    Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
 
   // Keep track of the active slide so the dots can highlight it
@@ -112,7 +114,12 @@ export default function Hero() {
 
   return (
     <section className="relative w-full overflow-hidden rounded-[2rem] shadow-2xl">
-      <Carousel setApi={setApi} opts={{ loop: true }} plugins={[autoplay]} className="w-full">
+      <Carousel
+        setApi={setApi}
+        opts={{ loop: true }}
+        plugins={[autoplay]}
+        className="w-full"
+      >
         <CarouselContent className="ml-0">
           {slides.map((slide, index) => (
             <CarouselItem key={slide.title} className="pl-0">
@@ -135,7 +142,9 @@ export default function Hero() {
             onClick={() => api?.scrollTo(index)}
             aria-label={`Go to slide ${index + 1}`}
             className={`h-2.5 rounded-full transition-all duration-300 ${
-              current === index ? "w-8 bg-white" : "w-2.5 bg-white/50 hover:bg-white/80"
+              current === index
+                ? "w-8 bg-white"
+                : "w-2.5 bg-white/50 hover:bg-white/80"
             }`}
           />
         ))}

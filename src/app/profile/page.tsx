@@ -22,7 +22,8 @@ type ProfileUser = {
 
 type FormErrors = Partial<Record<"name" | "image", string>>;
 
-const inputClass = "h-12 rounded-2xl border-0 bg-slate-200/60 px-5 dark:bg-zinc-800/80";
+const inputClass =
+  "h-12 rounded-2xl border-0 bg-slate-200/60 px-5 dark:bg-zinc-800/80";
 
 function ProfileForm({ user }: { user: ProfileUser }) {
   // The form starts filled with the current profile
@@ -37,7 +38,8 @@ function ProfileForm({ user }: { user: ProfileUser }) {
   });
 
   // Nothing to save until something has changed
-  const unchanged = name.trim() === user.name && image.trim() === (user.image ?? "");
+  const unchanged =
+    name.trim() === user.name && image.trim() === (user.image ?? "");
 
   // Show the typed photo as a live preview, but only when it is a valid link
   const previewSrc = validateUrl(image.trim()) ? image.trim() : undefined;
@@ -67,7 +69,9 @@ function ProfileForm({ user }: { user: ProfileUser }) {
     setLoading(false);
 
     if (error) {
-      toast.error(error.message || "Could not update your profile. Please try again.");
+      toast.error(
+        error.message || "Could not update your profile. Please try again.",
+      );
       return;
     }
 
@@ -122,7 +126,9 @@ function ProfileForm({ user }: { user: ProfileUser }) {
                 aria-invalid={Boolean(errors.name)}
                 className={inputClass}
               />
-              {errors.name && <p className="px-2 text-sm text-red-500">{errors.name}</p>}
+              {errors.name && (
+                <p className="px-2 text-sm text-red-500">{errors.name}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -135,7 +141,9 @@ function ProfileForm({ user }: { user: ProfileUser }) {
                 aria-invalid={Boolean(errors.image)}
                 className={inputClass}
               />
-              {errors.image && <p className="px-2 text-sm text-red-500">{errors.image}</p>}
+              {errors.image && (
+                <p className="px-2 text-sm text-red-500">{errors.image}</p>
+              )}
             </div>
 
             <div className="space-y-2">
