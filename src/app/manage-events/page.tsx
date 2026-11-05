@@ -66,7 +66,11 @@ type RowProps = {
 
 function EventRow({ event, onEdit, onDelete }: RowProps) {
   const router = useRouter();
-  const [imageFailed, setImageFailed] = useState(false);
+  
+  // If the thumbnail link changes (after an update), try loading the image again
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const imageFailed = failedUrl === event.thumbnail;
+
 
   const past = isPastEvent(event.eventDate);
   const badgeColor = typeColors[event.eventType] || typeColors.Other;
@@ -84,7 +88,7 @@ function EventRow({ event, onEdit, onDelete }: RowProps) {
           <img
             src={event.thumbnail}
             alt={event.title}
-            onError={() => setImageFailed(true)}
+            onError={() => setFailedUrl(event.thumbnail)}
             className="h-full w-full object-cover"
           />
         )}
